@@ -16,23 +16,23 @@ var currentPrompt;
 var shopName;
 var inShop;
 var tips = [
-"The lifesteal effect lets you heal 25% of the damage you did to an enemy.",
-"The assasinate effect has a 5% chance to instakill an enemy with every hit",
-"Everytime you pick up armor your armor level will increase by one. Every increase in armor level means 10 more damage reduction.",
+	"The lifesteal effect lets you heal 25% of the damage you did to an enemy.",
+	"The assasinate effect has a 5% chance to instakill an enemy with every hit",
+	"Everytime you pick up armor your armor level will increase by one. Every increase in armor level means 10 more damage reduction.",
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
 document.getElementById("tip").innerHTML = "Tip: " + tip;
 
 //Key to weapons: "[WEAPON NAME]", "[WEAPON TYPE]", [WEAPON DMG], "[WEAPON EFFECT]", 
 var weapons = [
-"sword", "sharp", 20, "",
-"club", "dull", 15, "",
-"bow", "ranged", 20, "",
-"golemn fist", "dull", 50, "",
-"sword of draining", "sharp", 30, "lifesteal",
-"axe of hell", "sharp", 25, "assassinate",
-"mace", "dull", "30", "",
-"assissin's dagger", "sharp", 5, "assassinate",
+	"sword", "sharp", 20, "",
+	"club", "dull", 15, "",
+	"bow", "ranged", 20, "",
+	"golemn fist", "dull", 50, "",
+	"sword of draining", "sharp", 30, "lifesteal",
+	"axe of hell", "sharp", 25, "assassinate",
+	"mace", "dull", "30", "",
+	"assissin's dagger", "sharp", 5, "assassinate",
 ];
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock",]
@@ -46,13 +46,13 @@ var humanParts = ["elbow", "knee", "nose", "finger", "toe", "skull", "leg", "arm
 var fourLeggedParts = ["skull", "leg", "face", "eye", "back", "nose", "stomach", "paw"];
 
 var fightMessages = [
-"You spot a ",
-"You see a ",
-"You get ambushed by a ", 
-"You get pinned down by a ",
-"You get attacked by a ", 
-"You find a ",
-"You encounter a ",
+	"You spot a ",
+	"You see a ",
+	"You get ambushed by a ",
+	"You get pinned down by a ",
+	"You get attacked by a ",
+	"You find a ",
+	"You encounter a ",
 ];
 
 //-----------------------------------
@@ -128,9 +128,9 @@ var rock = ["rock", 5, 0, ""];
 //[4] Shop Level Maximum (max lvl is 100)
 
 var shopItems = [
-"potion", 15, 1, 10,
-"mace", 50, 5, 15,
-"armor", 75, 1, 100,
+	"potion", 15, 1, 10,
+	"mace", 50, 5, 15,
+	"armor", 75, 1, 100,
 ];
 
 var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMart",];
@@ -150,7 +150,7 @@ function start() {
 	extraDMG = 0;
 	coins = 0;
 	inShop = false;
-	
+
 	document.getElementById("displays").style.display = "block";
 	document.getElementById("titleScreen").style.display = "none";
 	document.getElementById("baseControls").style.display = "block";
@@ -176,7 +176,7 @@ function inv(situation) {
 				string = divString.join('');
 				invItem.innerText = string;
 				document.getElementById("invContents").appendChild(invItem);
-				
+
 			}
 			counter = counter + 1;
 		}
@@ -187,18 +187,18 @@ function inv(situation) {
 			var invItem = document.createElement("p");
 			var string = inventory[counter];
 			if (equipment.indexOf(string) >= 0 || consumables.indexOf(string) >= 0) {
-					invItem.setAttribute("id", string);
-					invItem.setAttribute("onclick", "useItem(this.id)");
-					invItem.setAttribute("style", "color: blue; cursor: pointer;");
-					if (consumables.indexOf(string) >= 0) {string = window[string][5]}
-					if (equipment.indexOf(string) >= 0) {string = window[string][0]}
-					console.log(string);
-					var divString = string.split("");
-					divString[0] = divString[0].toUpperCase();
-					string = divString.join('');
-					invItem.innerText = string;
-					document.getElementById("invContents").appendChild(invItem);
-			}	
+				invItem.setAttribute("id", string);
+				invItem.setAttribute("onclick", "useItem(this.id)");
+				invItem.setAttribute("style", "color: blue; cursor: pointer;");
+				if (consumables.indexOf(string) >= 0) { string = window[string][5] }
+				if (equipment.indexOf(string) >= 0) { string = window[string][0] }
+				console.log(string);
+				var divString = string.split("");
+				divString[0] = divString[0].toUpperCase();
+				string = divString.join('');
+				invItem.innerText = string;
+				document.getElementById("invContents").appendChild(invItem);
+			}
 			counter = counter + 1;
 		}
 	}
@@ -230,7 +230,7 @@ function shop(shopName) {
 		var price = array[itemLocation + 1];
 		var minLevel = array[itemLocation + 2];
 		var maxLevel = array[itemLocation + 3];
-		
+
 		if (minLevel <= shopLevel && maxLevel >= shopLevel) {
 			var shopItem = document.createElement("p");
 			var string = item;
@@ -251,50 +251,50 @@ function shop(shopName) {
 		counter = counter + 1;
 		rotations = rotations + 1;
 	}
-	
+
 }
 
 function buyItem(item) {
-	if(weapons.indexOf(item) >= 0) {
+	if (weapons.indexOf(item) >= 0) {
 		inventory[0] = item;
 		update("You bought a " + item + ".");
 	}
-	if(consumables.indexOf(item) >= 0 || equipment.indexOf(item) >=0) {
+	if (consumables.indexOf(item) >= 0 || equipment.indexOf(item) >= 0) {
 		inventory.push(item);
 		update("You bought a " + item + ".");
 	}
-	if(item == "armor") {
+	if (item == "armor") {
 		var currentArmor = armor
 		armor = armor + 1;
 		update("You bought a " + item + ".");
 	}
 	var price = shopItems[shopItems.indexOf(item) + 1];
 	coins = coins - price;
-	
+
 }
 
 function cont() {
 	turns = turns + 1;
 	var eventRNG = Math.random();
-	if (fighting == false && health < maxHealth) {health = health + regen};
-	if (health > maxHealth) {health = maxHealth};
-	
+	if (fighting == false && health < maxHealth) { health = health + regen };
+	if (health > maxHealth) { health = maxHealth };
+
 	//Enemy Encounter
 	if (eventRNG <= .10) {
 		fighter = enemyList[Math.floor(Math.random() * enemyList.length)];
 		var message = fightMessages[Math.floor(Math.random() * fightMessages.length)];
-	
+
 		var startingDamage = window[fighter][3];
 		enemyHealth = window[fighter][0];
-	
-		if (window[fighter][10] != null && window[fighter][10] != "") {fighterName = window[fighter][10]}
-		else {fighterName = fighter};
-	
+
+		if (window[fighter][10] != null && window[fighter][10] != "") { fighterName = window[fighter][10] }
+		else { fighterName = fighter };
+
 		document.getElementById("baseControls").style.display = "none";
 		document.getElementById("fightingControls").style.display = "block";
 		update(message + fighter + ". <br> You are now fighting a " + fighterName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
 	}
-	
+
 	//Shop Encounter
 	if (eventRNG <= .15 && eventRNG > .1) {
 		shopName = shopNames[Math.floor(Math.random() * shopNames.length)];
@@ -305,7 +305,7 @@ function cont() {
 	}
 
 	update();
-	if (health <= 0) {die();}
+	if (health <= 0) { die(); }
 }
 
 function attack() {
@@ -315,37 +315,37 @@ function attack() {
 	var weaponDamage = weapons[weaponID + 2];
 	var weaponEffect = weapons[weaponID + 3];
 
-	if (window[fighter][9] != null) {weaponDamage = weaponDamage - window[fighter][9];}
-	if (weaponDamage < 0) {weaponDamage = 0};
+	if (window[fighter][9] != null) { weaponDamage = weaponDamage - window[fighter][9]; }
+	if (weaponDamage < 0) { weaponDamage = 0 };
 	enemyHealth = enemyHealth - weaponDamage;
-	
+
 	if (weaponEffect == "lifesteal") {
-			var lifeSteal = weaponDamage * 0.25;
-			lifeSteal = Math.round(lifeSteal);
-			health = health + lifeSteal;
-			if (health > maxHealth) {health = maxHealth};
+		var lifeSteal = weaponDamage * 0.25;
+		lifeSteal = Math.round(lifeSteal);
+		health = health + lifeSteal;
+		if (health > maxHealth) { health = maxHealth };
 	}
 	if (weaponEffect == "assassinate") {
 		if (Math.random() <= 0.05) {
 			enemyHealth = 0
 			update("", "", "The " + fighterName + " was beheaded by a weapon effect.");
 			fighting = "false";
-		
+
 			document.getElementById("fightingControls").style.display = "none";
 			document.getElementById("afterFightControls").style.display = "block";
 			return;
 		}
 	}
-	
+
 	var verbArray = weaponType + "Words";
 	var word = window[verbArray][Math.floor(Math.random() * window[verbArray].length)];
 	var partArray = window[fighter][6] + "Parts";
 	var bodyPart = window[partArray][Math.floor(Math.random() * window[partArray].length)];
-	
+
 	update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage");
-	
+
 	enemyAttack();
-	
+
 	turns = turns + 1;
 }
 
@@ -354,27 +354,27 @@ function enemyAttack() {
 		var damage = window[fighter][1];
 		var blockedDamage = (armor * 10) + defense;
 		damage = damage - blockedDamage;
-		if (damage < 0) {damage = 0};
+		if (damage < 0) { damage = 0 };
 		health = health - damage;
 		var verbArray = window[fighter][11] + "Words";
 		var word = window[verbArray][Math.floor(Math.random() * window[verbArray].length)];
 		word = word + "s";
 		var bodyPart = humanParts[Math.floor(Math.random() * humanParts.length)];
-	
+
 		update("The " + fighterName + " " + word + " your " + bodyPart + ", dealing " + damage + " damage.");
 	}
 	else {
 		update("The " + fighterName + " missed it's attack.");
 	}
-	
+
 	if (enemyHealth <= 0) {
 		update("", "", "The " + fighterName + " dies.");
 		fighting = "false";
-		
+
 		document.getElementById("fightingControls").style.display = "none";
 		document.getElementById("afterFightControls").style.display = "block";
 	}
-	if (health <= 0) {die();}
+	if (health <= 0) { die(); }
 }
 
 function loot() {
@@ -382,7 +382,7 @@ function loot() {
 	var specialDropChance = window[fighter][7];
 	var coinDrop = window[fighter][12];
 	var calcDrop = Math.random();
-	
+
 	if (calcDrop <= specialDropChance && specialDropChance != "" && specialDropChance != null) {
 		drop = window[fighter][8];
 	}
@@ -395,9 +395,9 @@ function loot() {
 		document.getElementById("afterFightControls").style.display = "none";
 		document.getElementById("baseControls").style.display = "block";
 		drop = "";
-		
+
 	}
-	
+
 	if (drop != "") {
 		coins = coins + coinDrop;
 		update("You loot the dead body.", "You found a " + drop + "! Do you want to pick it up?", "The " + fighterName + " had " + coinDrop + " coins.");
@@ -405,7 +405,7 @@ function loot() {
 		document.getElementById("selectionYesNo").style.display = "block";
 		currentPrompt = "pickup";
 	}
-	
+
 	fighter = "none";
 	fighterName = "";
 }
@@ -417,9 +417,9 @@ function selection(input) {
 				update("You pick up the " + drop + " and leave behind your " + inventory[0] + ".", "clear", "clear");
 				inventory[0] = drop;
 			}
-			if (consumables.indexOf(drop) >=0 || equipment.indexOf(drop) >= 0) {
-				if (consumables.indexOf(drop) >= 0) {var consumableName = window[drop][5]};
-				if (equipment.indexOf(drop) >= 0) {var consumableName = [window][drop][0]};
+			if (consumables.indexOf(drop) >= 0 || equipment.indexOf(drop) >= 0) {
+				if (consumables.indexOf(drop) >= 0) { var consumableName = window[drop][5] };
+				if (equipment.indexOf(drop) >= 0) { var consumableName = window[drop][0] };
 				update("You pick up the " + consumableName + ".", "clear", "clear");
 				inventory.push(drop);
 			}
@@ -454,7 +454,7 @@ function selection(input) {
 
 function drinkPotion(potion) {
 	var words = ["chug", "drink", "gulp down", "consume", "guzzle", "sip"];
-	var word = words[Math.floor(Math.random()*words.length)];
+	var word = words[Math.floor(Math.random() * words.length)];
 
 	var potionEffects = window[potion];
 	health = health + potionEffects[0];
@@ -462,16 +462,16 @@ function drinkPotion(potion) {
 	maxHealth = maxHealth + potionEffects[1];
 	regen = regen + potionEffects[4];
 	extraDMG = extraDMG + potionEffects[2];
-	
+
 	var potionName = potionEffects[5];
-	
+
 	var potionSlot = inventory.indexOf(potion);
 	inventory.splice(potionSlot, 1);
 	document.getElementById("inventory").style.display = "none";
 	document.getElementById("invContents").innerHTML = "";
-	
-	if (health > maxHealth) {health = maxHealth};
-	
+
+	if (health > maxHealth) { health = maxHealth };
+
 	update("", "You " + word + " the " + potionName + ". <br>" + potionEffects[6], "clear", "clear");
 }
 
@@ -485,15 +485,15 @@ function update(message, message2, message3) {
 	document.getElementById("coins").innerHTML = coins + " coins";
 
 	if (message != null && message != "") {
-		document.getElementById("mainDisplay").innerHTML = message;	
+		document.getElementById("mainDisplay").innerHTML = message;
 	}
 	if (message2 != null && message2 != "") {
-		document.getElementById("secondaryDisplay").innerHTML = message2;	
+		document.getElementById("secondaryDisplay").innerHTML = message2;
 	}
 	if (message3 != null && message3 != "") {
-		document.getElementById("thirdDisplay").innerHTML = message3;	
+		document.getElementById("thirdDisplay").innerHTML = message3;
 	}
-	
+
 	if (message == "clear") {
 		document.getElementById("mainDisplay").innerHTML = "";
 	}
@@ -513,11 +513,11 @@ function useItem(item) {
 		var itemStats = window[item]
 		enemyHealth -= itemStats[1];
 		health -= itemStats[2];
-		
+
 		var itemName = itemStats[0];
-		
+
 		update("", "You used the " + itemName + ".")
-		
+
 	}
 	enemyAttack();
 }
@@ -530,16 +530,16 @@ function die() {
 	document.getElementById("selectionYesNo").style.display = "none";
 }
 
-window.onclick = function(event) {
-  if (event.target == document.getElementById("inventory")) {
-    document.getElementById("inventory").style.display = "none";
-	document.getElementById("invContents").innerHTML = "";
-	
-	if (inShop == true) {
-		update("You left " + shopName + ".", "clear", "clear");
-		inShop = false;
+window.onclick = function (event) {
+	if (event.target == document.getElementById("inventory")) {
+		document.getElementById("inventory").style.display = "none";
+		document.getElementById("invContents").innerHTML = "";
+
+		if (inShop == true) {
+			update("You left " + shopName + ".", "clear", "clear");
+			inShop = false;
+		}
 	}
-  }
 }
 
 
