@@ -57,7 +57,7 @@ var fightMessages = [
 
 //-----------------------------------
 
-var enemyList = ["goblin", "knight", "bomber", "crocodile"];
+var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja"];
 
 //Key to enemy stats -
 //[0] Enemy health
@@ -71,7 +71,7 @@ var enemyList = ["goblin", "knight", "bomber", "crocodile"];
 //[8] This enemy's special drop (if any)
 //[9] How much less damage this fighter takes
 //[10] Non variable name, if any
-//[11] Weapon Type [ranged, sharp, dull] (affects attack mesages)
+//[11] Weapon Type [ranged, sharp, dull, animal] (affects attack mesages)
 //[12] Coin Drop
 //ALL FIELDS MUST BE AT LEAST PRESENT
 
@@ -80,6 +80,8 @@ var goblin = [50, 10, .40, 0, .80, "potion", "human", .2, "bow", 0, "", "ranged"
 var knight = [75, 10, .30, 5, .30, "armor", "human", 0, "", 10, "", "sharp", 10];
 var bomber = [50, 15, .40, 10, .70, "dynamite", "human", 0, "", 0, "", "dull", 10];
 var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15];
+var rabbit = [50, 500, .99, 0, 0, "", "fourlegged", 0, "", 0, "", "animal", 5];
+var ninja = [100, 50, .2, 10, .5, "shuriken", "human", 0, "", 0, "", "sharp", 20];
 var forager = [50, 10, .3, 10, .8, "apple", "human", .4, "grape", 0, "", "dull", 10];
 
 //MINIBOSSES
