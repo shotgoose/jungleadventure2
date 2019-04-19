@@ -18,7 +18,8 @@ var inShop;
 var tips = [
 	"The lifesteal effect lets you heal 25% of the damage you did to an enemy.",
 	"The assasinate effect has a 5% chance to instakill an enemy with every hit",
-	"Everytime you pick up armor your armor level will increase by one. Every increase in armor level means 10 more damage reduction.",
+	"Everytime you pick up armor your armor level will increase by one. Every increase in armor level means 5 more damage reduction.",
+	"Rabbits have a low chance to deal a devestating amount of damage.",
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
 document.getElementById("tip").innerHTML = "Tip: " + tip;
@@ -81,7 +82,7 @@ var knight = [75, 10, .30, 5, .30, "armor", "human", 0, "", 10, "", "sharp", 10]
 var bomber = [50, 15, .40, 10, .70, "dynamite", "human", 0, "", 0, "", "dull", 10];
 var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15];
 var rabbit = [50, 500, .99, 0, 0, "", "fourlegged", 0, "", 0, "", "animal", 5];
-var ninja = [100, 50, .2, 10, .5, "shuriken", "human", 0, "", 0, "", "sharp", 20];
+var ninja = [100, 50, .2, 10, .5, "shuriken", "human", .1, "assasin's dagger", 0, "", "sharp", 20];
 var forager = [50, 10, .3, 10, .8, "apple", "human", .4, "grape", 0, "", "dull", 10];
 
 //MINIBOSSES
@@ -274,7 +275,7 @@ function buyItem(item) {
 	}
 	var price = shopItems[shopItems.indexOf(item) + 1];
 	coins = coins - price;
-
+	shop(shopName);
 }
 
 function cont() {
@@ -356,7 +357,7 @@ function attack() {
 function enemyAttack() {
 	if (Math.random() > window[fighter][2]) {
 		var damage = window[fighter][1];
-		var blockedDamage = (armor * 10) + defense;
+		var blockedDamage = (armor * 5) + defense;
 		damage = damage - blockedDamage;
 		if (damage < 0) { damage = 0 };
 		health = health - damage;
