@@ -117,7 +117,7 @@ var werewolfpotion = [50, 50, 10, -10, 5, "werewolf potion", "You start to shift
 
 var dynamite = ["dynamite", 30, 10, ""];
 var rock = ["rock", 5, 0, ""];
-
+var shuriken = ["shurkien", 30, 0, ""];
 
 //-----------------------------------
 
@@ -131,6 +131,8 @@ var shopItems = [
 	"potion", 15, 1, 10,
 	"mace", 50, 5, 15,
 	"armor", 75, 1, 100,
+	"rock", 5, 1, 100,
+	"shuriken", 10, 1, 100,
 ];
 
 var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMart",];
