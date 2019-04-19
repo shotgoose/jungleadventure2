@@ -38,9 +38,9 @@ var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpot
 var equipment = ["dynamite", "rock",]
 
 var sharpWords = ["impale", "shred", "dice", "stab", "cut", "slice", "repeatedly stab", "mutilate", "butcher", "slit"];
-var dullWords = ["obliterate", "pound", "pummel", "hit", "destroy", "bludgeon", "shatter", "cracks", "strike", "snap"];
+var dullWords = ["obliterate", "pound", "pummel", "hit", "destroy", "bludgeon", "shatter", "crack", "strike", "snap"];
 var rangedWords = ["impale", "shoot", "hit", "destroy", "shred", "obliterate", "penetrate",];
-var animalWords = ["bite", "hit", "ram", "tackle", "slam", "pound", "obliterate", "snap", "clamp"];
+var animalWords = ["bite", "hit", "ram", "slam", "pound", "obliterate", "snap", "clamp"];
 
 var humanParts = ["elbow", "knee", "nose", "finger", "toe", "skull", "leg", "arm", "hand", "face", "chest", "eye", "pelvis", "shoulder", "teeth", "finger", "thumb", "ribs", "wrist"];
 var fourLeggedParts = ["skull", "leg", "face", "eye", "back", "nose", "stomach", "paw"];
