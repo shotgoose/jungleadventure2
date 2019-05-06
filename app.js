@@ -15,26 +15,47 @@ var coins;
 var currentPrompt;
 var shopName;
 var inShop;
+var bleed;
 var tips = [
-	"The lifesteal effect lets you heal 25% of the damage you did to an enemy.",
-	"The assasinate effect has a 5% chance to instakill an enemy with every hit",
-	"Everytime you pick up armor your armor level will increase by one. Every increase in armor level means 5 more damage reduction.",
-	"Rabbits have a low chance to deal a devestating amount of damage.",
+	"The lifesteal effect lets you heal a portion of the damage you did to an enemy.",
+	"The assasinate effect has a chance to instakill an enemy with every hit",
+	"Rabbits are mostly harmless, but they have a chance to hit you for a devastating amount.",
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
 document.getElementById("tip").innerHTML = "Tip: " + tip;
 
-//Key to weapons: "[WEAPON NAME]", "[WEAPON TYPE]", [WEAPON DMG], "[WEAPON EFFECT]", 
+//Key to weapons: "[WEAPON NAME]", "[WEAPON TYPE]", [WEAPON DMG], "[WEAPON EFFECT]", "[WEAPON EFFECT STAT]"
+//Key to effect stats: 
+//Lifesteal = lifesteal %
+//Assassinate = assassinate chance %
+//Bleed = extra damage per turn (bleed will stack every turn leading to devestating damage, bleed weapons are most powerful in long fights)
 var weapons = [
-	"sword", "sharp", 20, "",
-	"club", "dull", 15, "",
-	"bow", "ranged", 20, "",
-	"golemn fist", "dull", 50, "",
-	"sword of draining", "sharp", 30, "lifesteal",
-	"axe of hell", "sharp", 25, "assassinate",
-	"mace", "dull", "30", "",
-	"assissin's dagger", "sharp", 5, "assassinate",
+	"sword", "sharp", 20, "", 0,
+	"club", "dull", 15, "", 0,
+	"bow", "ranged", 20, "", 0,
+	"golemn fist", "dull", 50, "", 0,
+	"sword of draining", "sharp", 30, "lifesteal", 0.25,
+	"axe of hell", "sharp", 25, "assassinate", 0.05,
+	"mace", "dull", "30", "", 0,
+	"assissin's dagger", "sharp", 2, "assassinate", 0.15,
+	"piercer", "sharp", 0, "bleed", 10,
+	"torturer's longsword", "sharp", 5, "bleed", 25,
+	"life staff", "magicHeal", 50, "lifesteal", 0.4,
+	"fire staff", "magicFire", 100, "", 0,
+	"blood gauntlet", "magicDark", 25, "bleed", 30,
+	"infinity gauntlet", "magicBright", 100, "assassinate", .05,
+	"scythe", "sharp", 70, "lifesteal", .5,
+
 ];
+var armors = [
+	"metal helmet", 3, 0, 0,
+	"chainmail vest", 10, 0, 1,
+	"metal leggings", 7, 0, 2,
+	"metal boots", 5, 0, 3,
+	"leech vest", -10, 15, 1,
+	"parasitic helmet", -13, 10, 0,
+	"lightweight shoes", 0, 10, 0,
+]
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock",]
 
@@ -42,6 +63,12 @@ var sharpWords = ["impale", "shred", "dice", "stab", "cut", "slice", "repeatedly
 var dullWords = ["obliterate", "pound", "pummel", "hit", "destroy", "bludgeon", "shatter", "crack", "strike", "snap"];
 var rangedWords = ["impale", "shoot", "hit", "destroy", "shred", "obliterate", "penetrate",];
 var animalWords = ["bite", "hit", "ram", "slam", "pound", "obliterate", "snap", "clamp"];
+var magicHealWords = ["drain", "shoot", "empty", "absorb"];
+var magicFireWords = ["explode", "burn", "scorch", "melt", "fireball", "shoot"];
+var magicDarkWords = ["torture", "crush", "bludgeon", "mutilate",];
+var magicBrightWords = ["scorch", "blind", "disintegrate", "burn",];
+
+var magicFire2Words = ["explode", "burn", "scorche", "melt", "fireball", "shoot"];
 
 var humanParts = ["elbow", "knee", "nose", "finger", "toe", "skull", "leg", "arm", "hand", "face", "chest", "eye", "pelvis", "shoulder", "teeth", "finger", "thumb", "ribs", "wrist"];
 var fourLeggedParts = ["skull", "leg", "face", "eye", "back", "nose", "stomach", "paw"];
@@ -58,7 +85,7 @@ var fightMessages = [
 
 //-----------------------------------
 
-var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja"];
+var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage"];
 
 //Key to enemy stats -
 //[0] Enemy health
@@ -72,18 +99,18 @@ var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja"];
 //[8] This enemy's special drop (if any)
 //[9] How much less damage this fighter takes
 //[10] Non variable name, if any
-//[11] Weapon Type [ranged, sharp, dull, animal] (affects attack mesages)
+//[11] Weapon Type [READ ABOVE FOR TYPES] (affects attack mesages)
 //[12] Coin Drop
 //ALL FIELDS MUST BE AT LEAST PRESENT
 
 //BASIC ENEMIES
 var goblin = [50, 10, .40, 0, .80, "potion", "human", .2, "bow", 0, "", "ranged", 5];
-var knight = [75, 10, .30, 5, .30, "armor", "human", 0, "", 10, "", "sharp", 10];
+var knight = [75, 10, .30, 5, .30, "metal helmet", "human", 0, "", 10, "", "sharp", 10];
 var bomber = [50, 15, .40, 10, .70, "dynamite", "human", 0, "", 0, "", "dull", 10];
 var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15];
-var rabbit = [50, 500, .99, 0, 0, "", "fourlegged", 0, "", 0, "", "animal", 5];
-var ninja = [100, 50, .2, 10, .5, "shuriken", "human", .1, "assasin's dagger", 0, "", "sharp", 20];
-var forager = [50, 10, .3, 10, .8, "apple", "human", .4, "grape", 0, "", "dull", 10];
+var rabbit = [50, 500, .99, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5];
+var ninja = [100, 50, .2, 10, .3, "lightweight shoes", "human", .1, "assasin's dagger", 0, "", "sharp", 20];
+var mage = [150, 50, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "magicFire2", 25];
 
 //MINIBOSSES
 var golem = [100, 50, .7, 15, .8, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull"];
@@ -91,6 +118,7 @@ var werewolf = [150, 30, .2, 20, 1, "werewolfpotion", "fourLegged", 0, "", 0, "W
 
 //BOSSES
 var sgtGoblin = [200, 30, .3, 10, 1, "legendary goblin sword", "human", 0, "", 0, "Sargeant Goblin", "sharp"];
+var reaper = [500, 50, .1, 30, 1, "scythe", "human", .2, "blood gauntlet", 0, "Reaper", "sharp"]
 
 //-----------------------------------
 
@@ -120,7 +148,7 @@ var werewolfpotion = [50, 50, 10, -10, 5, "werewolf potion", "You start to shift
 
 var dynamite = ["dynamite", 30, 10, ""];
 var rock = ["rock", 5, 0, ""];
-var shuriken = ["shurkien", 30, 0, ""];
+var shuriken = ["shurkien", 30, 0, "bleed"];
 
 //-----------------------------------
 
@@ -144,7 +172,7 @@ var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMa
 
 function start() {
 	inventory = ["sword", "potion",]
-	armor = 0;
+	armor = ["", "", "", ""]; //armor = "head", "chest", "legs", "feet"
 	turns = 0;
 	fighter = "none";
 	health = 100;
@@ -155,6 +183,7 @@ function start() {
 	extraDMG = 0;
 	coins = 0;
 	inShop = false;
+	bleed = 0;
 
 	document.getElementById("displays").style.display = "block";
 	document.getElementById("titleScreen").style.display = "none";
@@ -185,6 +214,19 @@ function inv(situation) {
 			}
 			counter = counter + 1;
 		}
+		var counter = 0;
+		while (counter < armor.length) {
+			if (armor[counter] != "") {
+				var invItem = document.createElement("p");
+				var string = armor[counter];
+				var divString = string.split("");
+				divString[0] = divString[0].toUpperCase();
+				string = divString.join('');
+				invItem.innerText = string;
+				document.getElementById("invContents").appendChild(invItem);
+			}
+			counter = counter + 1;
+		}
 	}
 	if (situation == "fight") {
 		var counter = 0
@@ -198,6 +240,18 @@ function inv(situation) {
 				if (consumables.indexOf(string) >= 0) { string = window[string][5] }
 				if (equipment.indexOf(string) >= 0) { string = window[string][0] }
 				console.log(string);
+				var divString = string.split("");
+				divString[0] = divString[0].toUpperCase();
+				string = divString.join('');
+				invItem.innerText = string;
+				document.getElementById("invContents").appendChild(invItem);
+			}
+			counter = counter + 1;
+		}
+		while (counter < armor.length) {
+			if (armor[counter] != "") {
+				var invItem = document.createElement("p");
+				var string = armor[counter];
 				var divString = string.split("");
 				divString[0] = divString[0].toUpperCase();
 				string = divString.join('');
@@ -222,7 +276,6 @@ function shop(shopName) {
 		if (turns >= shopMilestones && turns < shopMilestones + 50) {
 			var shopLevel = counter;
 			count = false;
-			console.log(shopLevel);
 		}
 		shopMilestones = shopMilestones + 50;
 	}
@@ -268,10 +321,10 @@ function buyItem(item) {
 		inventory.push(item);
 		update("You bought a " + item + ".");
 	}
-	if (item == "armor") {
-		var currentArmor = armor
-		armor = armor + 1;
-		update("You bought a " + item + ".");
+	if (armors.indexOf(item) >= 0) {
+		var slot = armors[armors.indexOf(item) + 3];
+		update("You buy and equip the " + item + ", leaving behind your " + armor[slot] + ".");
+		armor[slot] = item;
 	}
 	var price = shopItems[shopItems.indexOf(item) + 1];
 	coins = coins - price;
@@ -286,10 +339,12 @@ function cont() {
 
 	//Enemy Encounter
 	if (eventRNG <= .10) {
+		fighting = true;
 		fighter = enemyList[Math.floor(Math.random() * enemyList.length)];
 		var message = fightMessages[Math.floor(Math.random() * fightMessages.length)];
 
 		var startingDamage = window[fighter][3];
+		health = health - startingDamage;
 		enemyHealth = window[fighter][0];
 
 		if (window[fighter][10] != null && window[fighter][10] != "") { fighterName = window[fighter][10] }
@@ -298,6 +353,7 @@ function cont() {
 		document.getElementById("baseControls").style.display = "none";
 		document.getElementById("fightingControls").style.display = "block";
 		update(message + fighter + ". <br> You are now fighting a " + fighterName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
+		bleed = 0;
 	}
 
 	//Shop Encounter
@@ -319,19 +375,29 @@ function attack() {
 	var weaponType = weapons[weaponID + 1];
 	var weaponDamage = weapons[weaponID + 2];
 	var weaponEffect = weapons[weaponID + 3];
+	var WES = weapons[weaponID + 4];
 
 	if (window[fighter][9] != null) { weaponDamage = weaponDamage - window[fighter][9]; }
+	var armorInc = calcArmor("deal");
+	weaponDamage = weaponDamage + armorInc;
 	if (weaponDamage < 0) { weaponDamage = 0 };
 	enemyHealth = enemyHealth - weaponDamage;
 
+	var verbArray = weaponType + "Words";
+	var word = window[verbArray][Math.floor(Math.random() * window[verbArray].length)];
+	var partArray = window[fighter][6] + "Parts";
+	var bodyPart = window[partArray][Math.floor(Math.random() * window[partArray].length)];
+
+	update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage.");
+
 	if (weaponEffect == "lifesteal") {
-		var lifeSteal = weaponDamage * 0.25;
+		var lifeSteal = weaponDamage * WES;
 		lifeSteal = Math.round(lifeSteal);
 		health = health + lifeSteal;
 		if (health > maxHealth) { health = maxHealth };
 	}
 	if (weaponEffect == "assassinate") {
-		if (Math.random() <= 0.05) {
+		if (Math.random() <= WES) {
 			enemyHealth = 0
 			update("", "", "The " + fighterName + " was beheaded by a weapon effect.");
 			fighting = "false";
@@ -341,13 +407,11 @@ function attack() {
 			return;
 		}
 	}
-
-	var verbArray = weaponType + "Words";
-	var word = window[verbArray][Math.floor(Math.random() * window[verbArray].length)];
-	var partArray = window[fighter][6] + "Parts";
-	var bodyPart = window[partArray][Math.floor(Math.random() * window[partArray].length)];
-
-	update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage");
+	if (weaponEffect == "bleed") {
+		bleed = bleed + WES;
+		enemyHealth = enemyHealth - bleed;
+		update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage. <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.");
+	}
 
 	enemyAttack();
 
@@ -357,7 +421,8 @@ function attack() {
 function enemyAttack() {
 	if (Math.random() > window[fighter][2]) {
 		var damage = window[fighter][1];
-		var blockedDamage = (armor * 5) + defense;
+		var armorBlock = calcArmor("block");
+		var blockedDamage = armorBlock + defense;
 		damage = damage - blockedDamage;
 		if (damage < 0) { damage = 0 };
 		health = health - damage;
@@ -373,6 +438,7 @@ function enemyAttack() {
 	}
 
 	if (enemyHealth <= 0) {
+		enemyHealth = 0;
 		update("", "", "The " + fighterName + " dies.");
 		fighting = "false";
 
@@ -429,10 +495,10 @@ function selection(input) {
 				inventory.push(drop);
 			}
 			if (drop == "armor") {
-				var currentArmor = armor
-				armor = armor + 1;
-				var damageResistDisplay = armor * 10;
-				update("You pick up the armor. <br>Your armor level has gone up from " + currentArmor + " to " + armor + ".<br>Your new armor will block " + damageResistDisplay + " incoming damage per attack.", "clear", "clear");
+				var slot = armors[armors.indexOf(drop) + 3];
+				update("You remove your " + armor[slot] + " and equip the " + drop + ".");
+				armor[drop] = item;
+				//update("You pick up the armor. <br>Your armor level has gone up from " + currentArmor + " to " + armor + ".<br>Your new armor will block " + damageResistDisplay + " incoming damage per attack.", "clear", "clear");
 			}
 		}
 		if (input == "no") {
@@ -486,6 +552,18 @@ function update(message, message2, message3) {
 	precentFilled = precentFilled * 100;
 	precentFilled = Math.round(precentFilled)
 	document.getElementById("healthBar").style.width = precentFilled + "%";
+
+	if (fighting == true) {
+		document.getElementById("enemyHealthBarFrame").style.display = "block";
+		document.getElementById("enemyHealthDisplay").innerHTML = enemyHealth;
+		var enemyPrecentFilled = enemyHealth / window[fighter][0];
+		enemyPrecentFilled = enemyPrecentFilled * 100;
+		enemyPrecentFilled = Math.round(enemyPrecentFilled)
+		document.getElementById("enemyHealthBar").style.width = enemyPrecentFilled + "%";
+	}
+	else {
+		document.getElementById("enemyHealthBarFrame").style.display = "none";
+	}
 	document.getElementById("turns").innerHTML = turns + " turns";
 	document.getElementById("coins").innerHTML = coins + " coins";
 
@@ -527,7 +605,37 @@ function useItem(item) {
 	enemyAttack();
 }
 
+function calcArmor(type) {
+	if (type == "block") {
+		var i = 0;
+		var total = 0;
+		while (i < armor.length) {
+			if (armor[i] != "") {
+				var current = armors[armors.indexOf(armor[i]) + 1];
+				var total = total + current;
+
+			}
+			i = i + 1;
+		}
+		return total;
+	}
+	if (type == "deal") {
+		var i = 0;
+		var total = 0;
+		while (i < armor.length) {
+			if (armor[i] != "") {
+				var current = armors[armors.indexOf(armor[i]) + 2];
+				console.log(current)
+				var total = total + current;
+			}
+			i = i + 1;
+		}
+		return total;
+	}
+}
+
 function die() {
+	health = 0;
 	update("", "", "You died.")
 	document.getElementById("baseControls").style.display = "none";
 	document.getElementById("fightingControls").style.display = "none";

@@ -1,59 +1,71 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <title>epic gamer moment</title>
-      <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-	
+
+<head>
+	<title>epic gamer moment</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
 	<div id="titleScreen">
-	<center>
-	<h1 id="title">Jungle Adventure</h1>
-	<h2 id="title2">2</h2>
-	<button class="button" id="start" onclick="start();">Start Game</button>
-	<h3 id="tip">Tip: </h3>
-	</center>
+		<center>
+			<h1 id="title">Jungle Adventure</h1>
+			<h2 id="title2">2</h2>
+			<button class="button" id="start" onclick="start();">Start Game</button>
+			<h3 id="tip">Tip: </h3>
+		</center>
 	</div>
-	
+
 	<div class="gameElement" id="displays">
-	<p id="mainDisplay">You wake up in a jungle with a sword and a potion.</p>
-	<p id="secondaryDisplay"></p>
-	<p id="thirdDisplay"></p>
-	<div id="healthBarFrame"><div id="healthBar"> <p id="healthDisplay">100</p> </div> </div>
-	<p id="turns">0 turns</p>
-	<p id="coins">0 coins</p>
+		<p id="mainDisplay">You wake up in a jungle with a sword and a potion.</p>
+		<p id="secondaryDisplay"></p>
+		<p id="thirdDisplay"></p>
+		<div id="healthBarFrame">
+			<div id="healthBar">
+				<p id="healthDisplay">100</p>
+			</div>
+		</div>
+		<div id="enemyHealthBarFrame">
+			<div id="enemyHealthBar">
+				<p id="enemyHealthDisplay"> </p>
+			</div>
+		</div>
+		<p id="turns">0 turns</p>
+		<p id="coins">0 coins</p>
 	</div>
-	
+
 	<div class="gameElement" id="baseControls">
-	<button class="button" id="continue" onclick="cont();">Continue</button>
-	<button class="button" id="inv" onclick="inv('safe');">Inventory</button>
+		<button class="button" id="continue" onclick="cont();">Continue</button>
+		<button class="button" id="inv" onclick="inv('safe');">Inventory</button>
 	</div>
-	
+
 	<div class="gameElement" id="fightingControls">
-	<button class="button" id="attack" onclick="attack();">Attack</button>
-	<button class="button" id="invFight" onclick="inv('fight')">Items</button>
+		<button class="button" id="attack" onclick="attack();">Attack</button>
+		<button class="button" id="invFight" onclick="inv('fight')">Items</button>
 	</div>
-	
+
 	<div class="gameElement" id="afterFightControls">
-	<button class="button" id="loot" onclick="loot();">Next</button>
+		<button class="button" id="loot" onclick="loot();">Next</button>
 	</div>
-	
+
 	<div class="gameElement" id="selectionYesNo">
-	<button class="button" id="pickUp" onclick="selection('yes');">Yes</button>
-	<button class="button" id="dontPickUp" onclick="selection('no')">No</button>
+		<button class="button" id="pickUp" onclick="selection('yes');">Yes</button>
+		<button class="button" id="dontPickUp" onclick="selection('no')">No</button>
 	</div>
-	
+
 	<div id="inventory" class="inventoryClass">
 		<div class="inv-content">
 			<center>
-			<h1 id="invTitle">Inventory</h1>
-			<div id="invContents">
-			</div>
+				<h1 id="invTitle">Inventory</h1>
+				<div id="invContents">
+				</div>
 			</center>
 		</div>
 	</div>
-	
-      <script src="app.js"></script>
 
-    </body>
+	<script src="app.js"></script>
+
+</body>
+
 </html>
