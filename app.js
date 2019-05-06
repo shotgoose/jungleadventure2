@@ -337,7 +337,7 @@ function cont() {
 	if (health > maxHealth) { health = maxHealth };
 
 	//Enemy Encounter
-	if (eventRNG <= .10) {
+	if (eventRNG <= .15) {
 		fighting = true;
 		fighter = enemyList[Math.floor(Math.random() * enemyList.length)];
 		var message = fightMessages[Math.floor(Math.random() * fightMessages.length)];
@@ -356,7 +356,7 @@ function cont() {
 	}
 
 	//Shop Encounter
-	if (eventRNG <= .15 && eventRNG > .1) {
+	if (eventRNG <= .18 && eventRNG > .15) {
 		shopName = shopNames[Math.floor(Math.random() * shopNames.length)];
 		document.getElementById("selectionYesNo").style.display = "block";
 		document.getElementById("baseControls").style.display = "none";
@@ -411,7 +411,7 @@ function attack() {
 	}
 	enemyHealth = enemyHealth - bleed;
 	if (bleed > 0) {
-		update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage. <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.");
+		document.getElementById("secondaryDisplay").innerHTML = document.getElementById("secondaryDisplay").innerHTML + " <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.";
 	}
 
 
