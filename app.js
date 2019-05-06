@@ -598,14 +598,13 @@ function useItem(item) {
 		var itemStats = window[item]
 		enemyHealth = enemyHealth - itemStats[1];
 		health = health + itemStats[2];
+		var itemName = itemStats[0];
+		update("", "You used the " + itemName + ".")
 
 		if (itemStats[3] == "bleed") {
 			bleed = bleed + itemStats[1];
+			update("", "You used the " + itemName + ". <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.");
 		}
-
-		var itemName = itemStats[0];
-
-		update("", "You used the " + itemName + ".")
 
 	}
 	enemyAttack();
