@@ -57,7 +57,7 @@ var armors = [
 	"lightweight shoes", 0, 10, 0,
 ]
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
-var equipment = ["dynamite", "rock",]
+var equipment = ["dynamite", "rock", "shuriken"]
 
 var sharpWords = ["impale", "shred", "dice", "stab", "cut", "slice", "repeatedly stab", "mutilate", "butcher", "slit"];
 var dullWords = ["obliterate", "pound", "pummel", "hit", "destroy", "bludgeon", "shatter", "crack", "strike", "snap"];
@@ -143,10 +143,10 @@ var werewolfpotion = [50, 50, 10, -10, 5, "werewolf potion", "You start to shift
 //Key to equipment -
 //[0] Display Name
 //[1] Damage to enemy.
-//[2] Damage to player.
+//[2] Healing to player.
 //[3] Effect
 
-var dynamite = ["dynamite", 30, 10, ""];
+var dynamite = ["dynamite", 30, -10, ""];
 var rock = ["rock", 5, 0, ""];
 var shuriken = ["shurkien", 30, 0, "bleed"];
 
@@ -156,12 +156,11 @@ var shuriken = ["shurkien", 30, 0, "bleed"];
 //[0] Item Name
 //[1] Price
 //[3] Shop Level Minimum (min level is 1)
-//[4] Shop Level Maximum (max lvl is 100)
+//[4] Shop Level Maximum
 
 var shopItems = [
-	"potion", 15, 1, 10,
-	"mace", 50, 5, 15,
-	"armor", 75, 1, 100,
+	"potion", 15, 1, 20,
+	"mace", 50, 2, 15,
 	"rock", 5, 1, 100,
 	"shuriken", 10, 1, 100,
 ];
@@ -409,9 +408,12 @@ function attack() {
 	}
 	if (weaponEffect == "bleed") {
 		bleed = bleed + WES;
-		enemyHealth = enemyHealth - bleed;
+	}
+	enemyHealth = enemyHealth - bleed;
+	if (bleed > 0) {
 		update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage. <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.");
 	}
+
 
 	enemyAttack();
 
@@ -594,8 +596,12 @@ function useItem(item) {
 	}
 	else {
 		var itemStats = window[item]
-		enemyHealth -= itemStats[1];
-		health -= itemStats[2];
+		enemyHealth = enemyHealth - itemStats[1];
+		health = health + itemStats[2];
+
+		if (itemStats[3] == "bleed") {
+			bleed = bleed + itemStats[1];
+		}
 
 		var itemName = itemStats[0];
 
