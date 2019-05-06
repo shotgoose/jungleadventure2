@@ -148,7 +148,7 @@ var werewolfpotion = [50, 50, 10, -10, 5, "werewolf potion", "You start to shift
 
 var dynamite = ["dynamite", 30, -10, ""];
 var rock = ["rock", 5, 0, ""];
-var shuriken = ["shurkien", 30, 0, "bleed"];
+var shuriken = ["shuriken", 30, 0, "bleed"];
 
 //-----------------------------------
 
@@ -605,6 +605,10 @@ function useItem(item) {
 			bleed = bleed + itemStats[1];
 			update("", "You used the " + itemName + ". <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.");
 		}
+		var equipSlot = inventory.indexOf(item);
+		inventory.splice(equipSlot, 1);
+		document.getElementById("inventory").style.display = "none";
+		document.getElementById("invContents").innerHTML = "";
 
 	}
 	enemyAttack();
