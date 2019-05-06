@@ -499,8 +499,7 @@ function selection(input) {
 			if (drop == "armor") {
 				var slot = armors[armors.indexOf(drop) + 3];
 				update("You remove your " + armor[slot] + " and equip the " + drop + ".");
-				armor[drop] = item;
-				//update("You pick up the armor. <br>Your armor level has gone up from " + currentArmor + " to " + armor + ".<br>Your new armor will block " + damageResistDisplay + " incoming damage per attack.", "clear", "clear");
+				armor[slot] = item;
 			}
 		}
 		if (input == "no") {
