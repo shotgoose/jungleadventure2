@@ -63,6 +63,7 @@ var sharpWords = ["impale", "shred", "dice", "stab", "cut", "slice", "repeatedly
 var dullWords = ["obliterate", "pound", "pummel", "hit", "destroy", "bludgeon", "shatter", "crack", "strike", "snap"];
 var rangedWords = ["impale", "shoot", "hit", "destroy", "shred", "obliterate", "penetrate",];
 var animalWords = ["bite", "hit", "ram", "slam", "pound", "obliterate", "snap", "clamp"];
+var explosiveWords = ["explode", "obliterate", "scorch", "melt", "burn", "destroy", "break", "shred", "dismember"];
 var magicHealWords = ["drain", "shoot", "empty", "absorb"];
 var magicFireWords = ["explode", "burn", "scorch", "melt", "fireball", "shoot"];
 var magicDarkWords = ["torture", "crush", "bludgeon", "mutilate",];
@@ -104,9 +105,9 @@ var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "
 //ALL FIELDS MUST BE AT LEAST PRESENT
 
 //BASIC ENEMIES
-var goblin = [50, 10, .40, 0, .80, "potion", "human", .2, "bow", 0, "", "ranged", 5];
-var knight = [75, 10, .30, 5, .30, "metal helmet", "human", 0, "", 10, "", "sharp", 10];
-var bomber = [50, 15, .40, 10, .70, "dynamite", "human", 0, "", 0, "", "dull", 10];
+var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged", 5];
+var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10];
+var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10];
 var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15];
 var rabbit = [50, 500, .99, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5];
 var ninja = [100, 50, .2, 10, .3, "lightweight shoes", "human", .1, "assasin's dagger", 0, "", "sharp", 20];
@@ -197,20 +198,18 @@ function inv(situation) {
 		while (counter < inventory.length) {
 			var invItem = document.createElement("p");
 			var string = inventory[counter];
-			if (equipment.indexOf(string) == -1) {
-				if (consumables.indexOf(string) >= 0) {
-					invItem.setAttribute("id", string);
-					invItem.setAttribute("onclick", "drinkPotion(this.id);");
-					invItem.setAttribute("style", "color: blue; cursor: pointer;");
-					string = window[string][5];
-				}
-				var divString = string.split("");
-				divString[0] = divString[0].toUpperCase();
-				string = divString.join('');
-				invItem.innerText = string;
-				document.getElementById("invContents").appendChild(invItem);
-
+			if (consumables.indexOf(string) >= 0) {
+				invItem.setAttribute("id", string);
+				invItem.setAttribute("onclick", "drinkPotion(this.id);");
+				invItem.setAttribute("style", "color: blue; cursor: pointer;");
+				string = window[string][5];
 			}
+			var divString = string.split("");
+			divString[0] = divString[0].toUpperCase();
+			string = divString.join('');
+			invItem.innerText = string;
+			document.getElementById("invContents").appendChild(invItem);
+
 			counter = counter + 1;
 		}
 		var counter = 0;
