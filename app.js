@@ -110,7 +110,7 @@ var bomber = [50, 15, .40, 10, .70, "dynamite", "human", 0, "", 0, "", "dull", 1
 var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15];
 var rabbit = [50, 500, .99, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5];
 var ninja = [100, 50, .2, 10, .3, "lightweight shoes", "human", .1, "assasin's dagger", 0, "", "sharp", 20];
-var mage = [150, 50, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "magicFire2", 25];
+var mage = [150, 50, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25];
 
 //MINIBOSSES
 var golem = [100, 50, .7, 15, .8, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull"];
