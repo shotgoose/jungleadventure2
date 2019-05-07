@@ -18,14 +18,14 @@ var inShop;
 var bleed;
 var tips = [
 	"The lifesteal effect lets you heal a portion of the damage you did to an enemy.",
-	"The assasinate effect has a chance to instakill an enemy with every hit",
-	"Rabbits are mostly harmless, but they have a chance to hit you for a devastating amount.",
-	"Using ranged weapons makes your opponents 20% more likely to miss an attack on you."
+	"The assasinate effect has a chance to instakill an enemy with every hit.",
+	"Using ranged weapons makes your opponents 20% more likely to miss an attack on you.",
+	"The bleed effect can stack, the more it is used in a fight, the more damage the bleed does per turn. In long fights this can lead to extremely high damage."
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
 document.getElementById("tip").innerHTML = "Tip: " + tip;
 
-//Key to weapons: "[WEAPON NAME]", "[WEAPON TYPE]", [WEAPON DMG], "[WEAPON EFFECT]", "[WEAPON EFFECT STAT]"
+//Key to weapons: [WEAPON NAME], [WEAPON TYPE], [WEAPON DMG], [WEAPON EFFECT], [WEAPON EFFECT STAT]
 //Key to effect stats: 
 //Lifesteal = lifesteal %
 //Assassinate = assassinate chance %
@@ -48,14 +48,18 @@ var weapons = [
 	"scythe", "sharp", 70, "lifesteal", .5,
 
 ];
+//Key to Armor: [ARMOR NAME], [INCOMING DAMAGE DECREASE], [OUTGOING DAMAGE INCREASE], [ARMOR SLOT]
+//Damage numbers can be negative, it will reverse the effect and lead to interesting armors that have pros and cons
 var armors = [
-	"metal helmet", 3, 0, 0,
+	"metal helmet", 5, 0, 0,
 	"chainmail vest", 10, 0, 1,
 	"metal leggings", 7, 0, 2,
 	"metal boots", 5, 0, 3,
 	"leech vest", -10, 15, 1,
 	"parasitic helmet", -13, 10, 0,
-	"lightweight shoes", 0, 10, 0,
+	"lightweight shoes", 0, 10, 3,
+	"steel plate", 20, -5, 1,
+	"precision glasses", 0, 10, 0,
 ]
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock", "shuriken"]
@@ -110,8 +114,8 @@ var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "
 var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged", 5, 1];
 var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10, .8];
 var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10, .7];
-var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5];
-var rabbit = [50, 500, .99, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5, 1];
+var crocodile = [100, 20, .4, 20, .6, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5];
+var rabbit = [50, 500, .9999999, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5, 1];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .3, "lightweight shoes", 0, "", "sharp", 20, .3];
 var mage = [150, 40, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
 var asssassin = [100, 0, 1, 90, .3, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .4];
@@ -314,9 +318,11 @@ function shop(shopName) {
 }
 
 function buyItem(item) {
+	var price = shopItems[shopItems.indexOf(item) + 1];
+	coins = coins - price;
 	if (weapons.indexOf(item) >= 0) {
+		update("You bought a " + item + " and left behind your" + inventory[0] + ".");
 		inventory[0] = item;
-		update("You bought a " + item + ".");
 	}
 	if (consumables.indexOf(item) >= 0 || equipment.indexOf(item) >= 0) {
 		inventory.push(item);
@@ -324,11 +330,14 @@ function buyItem(item) {
 	}
 	if (armors.indexOf(item) >= 0) {
 		var slot = armors[armors.indexOf(item) + 3];
-		update("You buy and equip the " + item + ", leaving behind your " + armor[slot] + ".");
+		if (armor[slot] != "") {
+			update("You buy and equip the " + item + ", leaving behind your " + armor[slot] + ".");
+		}
+		else {
+			update("You buy and equip the " + item + ".")
+		}
 		armor[slot] = item;
 	}
-	var price = shopItems[shopItems.indexOf(item) + 1];
-	coins = coins - price;
 	shop(shopName);
 }
 
@@ -359,7 +368,7 @@ function cont() {
 	}
 
 	//Shop Encounter
-	if (eventRNG <= .28 && eventRNG > .25) {
+	if (eventRNG <= .30 && eventRNG > .25) {
 		shopName = shopNames[Math.floor(Math.random() * shopNames.length)];
 		document.getElementById("selectionYesNo").style.display = "block";
 		document.getElementById("baseControls").style.display = "none";
@@ -503,8 +512,13 @@ function selection(input) {
 			}
 			if (armors.indexOf(drop) >= 0) {
 				var slot = armors[armors.indexOf(drop) + 3];
-				update("You remove your " + armor[slot] + " and equip the " + drop + ".");
-				armor[slot] = item;
+				if (armor[slot] != "") {
+					update("You remove your " + armor[slot] + " and equip the " + drop + ".", "clear", "clear");
+				}
+				else {
+					update("You equip the " + drop + ".")
+				}
+				armor[slot] = drop;
 			}
 		}
 		if (input == "no") {
@@ -607,6 +621,7 @@ function useItem(item) {
 
 		if (itemStats[3] == "bleed") {
 			bleed = bleed + itemStats[1];
+			enemyHealth = enemyHealth - bleed;
 			update("", "You used the " + itemName + ". <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.");
 		}
 		var equipSlot = inventory.indexOf(item);
