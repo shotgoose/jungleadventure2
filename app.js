@@ -20,6 +20,7 @@ var tips = [
 	"The lifesteal effect lets you heal a portion of the damage you did to an enemy.",
 	"The assasinate effect has a chance to instakill an enemy with every hit",
 	"Rabbits are mostly harmless, but they have a chance to hit you for a devastating amount.",
+	"Using ranged weapons makes your opponents 20% more likely to miss an attack on you."
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
 document.getElementById("tip").innerHTML = "Tip: " + tip;
@@ -102,16 +103,18 @@ var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "
 //[10] Non variable name, if any
 //[11] Weapon Type [READ ABOVE FOR TYPES] (affects attack mesages)
 //[12] Coin Drop
+//[13] Encounter chance once they are chosen for an encounter
 //ALL FIELDS MUST BE AT LEAST PRESENT
 
 //BASIC ENEMIES
-var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged", 5];
-var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10];
-var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10];
-var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15];
-var rabbit = [50, 500, .99, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5];
-var ninja = [100, 25, .2, 10, .3, "lightweight shoes", "human", .1, "assasin's dagger", 0, "", "sharp", 20];
-var mage = [150, 40, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25];
+var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged", 5, 1];
+var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10, .8];
+var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10, .7];
+var crocodile = [100, 20, .4, 20, .4, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5];
+var rabbit = [50, 500, .99, 0, 0, "", "fourLegged", 0, "", 0, "", "animal", 5, 1];
+var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .3, "lightweight shoes", 0, "", "sharp", 20, .3];
+var mage = [150, 40, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
+var asssassin = [100, 0, 1, 90, .3, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .4];
 
 //MINIBOSSES
 var golem = [100, 50, .7, 15, .8, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull"];
@@ -336,26 +339,27 @@ function cont() {
 	if (health > maxHealth) { health = maxHealth };
 
 	//Enemy Encounter
-	if (eventRNG <= .15) {
-		fighting = true;
+	if (eventRNG <= .25) {
 		fighter = enemyList[Math.floor(Math.random() * enemyList.length)];
-		var message = fightMessages[Math.floor(Math.random() * fightMessages.length)];
+		if (window[fighter][13] > Math.random()) {
+			fighting = true;
+			var message = fightMessages[Math.floor(Math.random() * fightMessages.length)];
+			var startingDamage = window[fighter][3];
+			health = health - startingDamage;
+			enemyHealth = window[fighter][0];
 
-		var startingDamage = window[fighter][3];
-		health = health - startingDamage;
-		enemyHealth = window[fighter][0];
+			if (window[fighter][10] != null && window[fighter][10] != "") { fighterName = window[fighter][10] }
+			else { fighterName = fighter };
 
-		if (window[fighter][10] != null && window[fighter][10] != "") { fighterName = window[fighter][10] }
-		else { fighterName = fighter };
-
-		document.getElementById("baseControls").style.display = "none";
-		document.getElementById("fightingControls").style.display = "block";
-		update(message + fighter + ". <br> You are now fighting a " + fighterName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
-		bleed = 0;
+			document.getElementById("baseControls").style.display = "none";
+			document.getElementById("fightingControls").style.display = "block";
+			update(message + fighter + ". <br> You are now fighting a " + fighterName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
+			bleed = 0;
+		}
 	}
 
 	//Shop Encounter
-	if (eventRNG <= .18 && eventRNG > .15) {
+	if (eventRNG <= .28 && eventRNG > .25) {
 		shopName = shopNames[Math.floor(Math.random() * shopNames.length)];
 		document.getElementById("selectionYesNo").style.display = "block";
 		document.getElementById("baseControls").style.display = "none";
@@ -420,7 +424,9 @@ function attack() {
 }
 
 function enemyAttack() {
-	if (Math.random() > window[fighter][2]) {
+	var missingChance = window[fighter][2];
+	if (weapons[weapons.indexOf(inventory[0]) + 1] == "ranged") { missingChance = missingChance - .2 }
+	if (Math.random() > missingChance) {
 		var damage = window[fighter][1];
 		var armorBlock = calcArmor("block");
 		var blockedDamage = armorBlock + defense;
