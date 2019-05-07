@@ -501,7 +501,7 @@ function selection(input) {
 				update("You pick up the " + consumableName + ".", "clear", "clear");
 				inventory.push(drop);
 			}
-			if (drop == "armor") {
+			if (armors.indexOf(drop) >= 0) {
 				var slot = armors[armors.indexOf(drop) + 3];
 				update("You remove your " + armor[slot] + " and equip the " + drop + ".");
 				armor[slot] = item;
