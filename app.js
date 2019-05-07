@@ -36,7 +36,7 @@ var weapons = [
 	"bow", "ranged", 20, "", 0,
 	"golemn fist", "dull", 50, "", 0,
 	"sword of draining", "sharp", 30, "lifesteal", 0.25,
-	"axe of hell", "sharp", 25, "assassinate", 0.05,
+	"axe of hell", "sharp", 30, "assassinate", 0.05,
 	"mace", "dull", "30", "", 0,
 	"assissin's dagger", "sharp", 2, "assassinate", 0.15,
 	"piercer", "sharp", 0, "bleed", 10,
@@ -115,7 +115,7 @@ var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged",
 var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10, .8];
 var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10, .7];
 var crocodile = [100, 20, .4, 20, .6, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5];
-var rabbit = [50, 500, .9999999, 0, 0, "", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
+var rabbit = [50, 500, .999999999999999999999, 0, 0, "", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .3, "lightweight shoes", 0, "", "sharp", 20, .3];
 var mage = [150, 40, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
 var asssassin = [100, 0, 1, 90, .3, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .4];
