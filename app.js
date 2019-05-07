@@ -91,7 +91,7 @@ var fightMessages = [
 
 //-----------------------------------
 
-var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage"];
+var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage", "assassin"];
 
 //Key to enemy stats -
 //[0] Enemy health
