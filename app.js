@@ -791,4 +791,4 @@ window.onclick = function (event) {
 	}
 }
 
-console.log("1.1")
+console.log("1.2")
