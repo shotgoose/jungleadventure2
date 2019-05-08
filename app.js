@@ -718,7 +718,7 @@ function summonMiniBoss(item) {
 	document.getElementById("fightingControls").style.display = "block";
 	bleed = 0;
 
-	update("You use the " + name + ". <br>" + message + "<br> You are now fighting a " + boss + ".", "clear", "clear");
+	update("You use the " + name + ". <br>" + message + "<br> You are now fighting a " + fighterName + ".", "clear", "clear");
 
 	var slot = inventory.indexOf(item);
 	inventory.splice(slot, 1);
