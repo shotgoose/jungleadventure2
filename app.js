@@ -96,13 +96,13 @@ var humanParts = ["elbow", "knee", "nose", "finger", "toe", "skull", "leg", "arm
 var fourLeggedParts = ["skull", "leg", "face", "eye", "back", "nose", "stomach", "paw"];
 
 var fightMessages = [
-	"You spot a ",
-	"You see a ",
-	"You get ambushed by a ",
-	"You get pinned down by a ",
-	"You get attacked by a ",
-	"You find a ",
-	"You encounter a ",
+	"You spot a",
+	"You see a",
+	"You get ambushed by a",
+	"You get pinned down by a",
+	"You get attacked by a",
+	"You find a",
+	"You encounter a",
 ];
 
 //-----------------------------------
@@ -124,29 +124,30 @@ var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "
 //[11] Weapon Type [READ ABOVE FOR TYPES] (affects attack mesages)
 //[12] Coin Drop
 //[13] Encounter chance once they are chosen for an encounter
+//[14] a(n) true or false
 //ALL FIELDS MUST BE AT LEAST PRESENT
 
 //BASIC ENEMIES
-var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged", 5, 1];
-var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10, .8];
-var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10, .7];
-var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5];
-var rabbit = [50, 500, 1, 0, .05, "carrot", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
-var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3];
-var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
-var assassin = [100, 0, 1, 90, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .6];
-var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .7];
-var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, 1];
+var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged", 5, 1, false];
+var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10, .8, false];
+var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10, .7, false];
+var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5, false];
+var rabbit = [50, 500, 1, 0, .05, "carrot", "fourLegged", 0, "", 0, "", "magicDark", 5, 1, false];
+var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3, false];
+var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2, false];
+var assassin = [100, 0, 1, 45, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .6, true];
+var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .7, false];
+var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, 1, false];
 
 //MINIBOSSES
-var golem = [100, 50, .7, 15, 1, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1];
-var werewolf = [150, 30, .2, 20, 1, "werewolfpotion", "fourLegged", 0, "", 0, "Werewolf", "animal", 50, 1];
-var giantrabbit = [200, 40, .4, 20, 1, "carrot sword", "fourLegged", 0, "", 0, "Giant Rabbit", "animal", 50, 1];
+var golem = [100, 50, .7, 15, 1, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1, true];
+var werewolf = [150, 30, .2, 20, 1, "werewolfpotion", "fourLegged", 0, "", 0, "Werewolf", "animal", 50, 1, false];
+var giantrabbit = [200, 40, .4, 20, 1, "carrot sword", "fourLegged", 0, "", 0, "Giant Rabbit", "animal", 50, 1, false];
 
 //BOSSES
-var sgtGoblin = [200, 30, .3, 10, 1, "legendary goblin sword", "human", 0, "", 0, "Sargeant Goblin", "sharp", 100, 1]; //turn 100
-var reaper = [500, 50, .1, 30, 1, "scythe", "human", .2, "blood gauntlet", 0, "Reaper", "sharp", 200, 1]; //turn 200
-var vampire = [750, 75, .2, 20, 1, "sword of draining", 0, "", 0, "Vampire", "sharp", 600, 1]; //turn 300
+var sgtGoblin = [200, 30, .3, 10, 1, "legendary goblin sword", "human", 0, "", 0, "Sargeant Goblin", "sharp", 100, 1, false]; //turn 100
+var reaper = [500, 50, .1, 30, 1, "scythe", "human", .2, "blood gauntlet", 0, "Reaper", "sharp", 200, 1, false]; //turn 200
+var vampire = [750, 75, .2, 20, 1, "sword of draining", 0, "", 0, "Vampire", "sharp", 600, 1, false]; //turn 300
 
 //-----------------------------------
 
@@ -243,6 +244,13 @@ function start() {
 function inv(situation) {
 	document.getElementById("inventory").style.display = "block";
 	document.getElementById("invTitle").innerHTML = "Inventory";
+	var gameElements = document.getElementsByClassName("button");
+	gameElements = Array.from(gameElements);
+	var i = 0;
+	while (i < gameElements.length) {
+		gameElements[i].disabled = "true";
+		i = i + 1;
+	}
 	if (situation == "safe") {
 		var counter = 0;
 		while (counter < inventory.length) {
@@ -317,7 +325,14 @@ function shop(shopName) {
 	document.getElementById("inventory").style.display = "block";
 	document.getElementById("invTitle").innerHTML = shopName;
 	document.getElementById("invContents").innerHTML = "";
-	var shopMilestones = 0;
+	var gameElements = document.getElementsByClassName("button");
+	gameElements = Array.from(gameElements);
+	var i = 0;
+	while (i < gameElements.length) {
+		gameElements[i].disabled = "true";
+		i = i + 1;
+	}
+	Milestones = 0;
 	var counter = 0;
 	var count = true;
 	while (count == true) {
@@ -373,7 +388,7 @@ function buyItem(item) {
 		weaponEnchants = [];
 		inventory[0] = item;
 	}
-	if (consumables.indexOf(item) >= 0 || equipment.indexOf(item) >= 0) {
+	if (consumables.indexOf(item) >= 0 || equipment.indexOf(item) >= 0 || enchants.indexOf(item) >= 0) {
 		inventory.push(item);
 		update("You bought a " + item + ".");
 	}
@@ -410,10 +425,13 @@ function cont() {
 
 			if (window[fighter][10] != null && window[fighter][10] != "") { fighterName = window[fighter][10] }
 			else { fighterName = fighter };
+			var tempName = fighterName;
+			if (window[fighter][14] == true) { tempName = "n " + fighterName }
+			else { tempName = " " + fighterName }
 
 			document.getElementById("baseControls").style.display = "none";
 			document.getElementById("fightingControls").style.display = "block";
-			update(message + fighter + ". <br> You are now fighting a " + fighterName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
+			update(message + tempName + ". <br> You are now fighting a" + tempName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
 			bleed = 0;
 		}
 	}
@@ -593,6 +611,7 @@ function selection(input) {
 					update("You equip the " + drop + ".", "clear", "clear");
 				}
 				armor[slot] = drop;
+				update();
 			}
 		}
 		if (input == "no") {
@@ -691,10 +710,29 @@ function update(message, message2, message3) {
 
 	var armorInc = calcArmor("deal");
 	var armorBlock = calcArmor("block");
+	var weaponStats = weapons[weapons.indexOf(inventory[0]) + 2];
+
 	var attackDamage = armorInc + extraDMG;
 	var damageResist = armorBlock + defense;
-	var all = [damageResist, attackDamage, regen, maxHealth];
+	if (weaponEnchants != []) { enchantInc = calcEnchants(); }
+	weaponEffects = [];
+	if (weapons[weapons.indexOf(inventory[0]) + 3] != "") { weaponEffects.push(weapons[weapons.indexOf(inventory[0]) + 3]) }
+	if (weapons[weapons.indexOf(inventory[0]) + 5] != "") { weaponEffects.push(weapons[weapons.indexOf(inventory[0]) + 5]) }
+	var i = 0;
+	while (i < weaponEnchants.length) {
+		weaponEffects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 2]);
+		i = i + 4;
+	};
+	weaponStats = weaponStats + enchantInc;
 
+	weaponEffects = weaponEffects.filter(function (item, index) {
+		return weaponEffects.indexOf(item) >= index;
+	});
+	if (weaponEffects != "") { weaponEffects = "- Effects: " + weaponEffects.toString(); };
+
+	weaponStats = weaponStats + " DMG " + weaponEffects;
+
+	var all = [damageResist, attackDamage, weaponStats, regen, maxHealth];
 	var stats = Array.from(document.getElementsByClassName("statCh"));
 	i = 0;
 	while (i < stats.length) {
@@ -728,6 +766,18 @@ function useItem(item) {
 	enemyAttack();
 }
 
+function closeInv() {
+	var gameElements = document.getElementsByClassName("button");
+	gameElements = Array.from(gameElements);
+	var i = 0;
+	while (i < gameElements.length) {
+		gameElements[i].disabled = null;
+		i = i + 1;
+	}
+	document.getElementById("inventory").style.display = "none";
+	document.getElementById("invContents").innerHTML = "";
+}
+
 function summonMiniBoss(item) {
 	var questItem = window[item];
 	var name = questItem[0];
@@ -745,7 +795,11 @@ function summonMiniBoss(item) {
 	document.getElementById("fightingControls").style.display = "block";
 	bleed = 0;
 
-	update("You use the " + name + ". <br>" + message + "<br> You are now fighting a " + fighterName + ".", "clear", "clear");
+	var tempName = fighterName;
+	if (window[fighter][14] == true) { tempName = "n " + fighterName }
+	else { tempName = " " + fighterName }
+
+	update("You use the " + name + ". <br>" + message + "<br> You are now fighting a" + tempName + ". <br> The " + fighterName + " dealt " + startingDamage + " starting damage.", "clear", "clear");
 
 	var slot = inventory.indexOf(item);
 	inventory.splice(slot, 1);
@@ -755,12 +809,12 @@ function summonMiniBoss(item) {
 }
 
 function enchantWeapon(enchant) {
-	update("You used the " + enchant + " book. <br> Your weapon has gained the " + enchant + " enchantment.", "clear", "clear");
 	weaponEnchants.push(enchant);
 	var slot = inventory.indexOf(enchant);
 	inventory.splice(slot, 1);
 	document.getElementById("inventory").style.display = "none";
 	document.getElementById("invContents").innerHTML = "";
+	update("You used the " + enchant + " book. <br> Your " + inventory[0] + " has gained the " + enchant + " enchantment.", "clear", "clear");
 }
 
 function calcArmor(type) {
@@ -811,16 +865,4 @@ function die() {
 	document.getElementById("selectionYesNo").style.display = "none";
 }
 
-window.onclick = function (event) {
-	if (event.target == document.getElementById("inventory")) {
-		document.getElementById("inventory").style.display = "none";
-		document.getElementById("invContents").innerHTML = "";
-
-		if (inShop == true) {
-			update("You left " + shopName + ".", "clear", "clear");
-			inShop = false;
-		}
-	}
-}
-
-console.log("1.4");
+console.log("1.5");

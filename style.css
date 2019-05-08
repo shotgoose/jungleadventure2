@@ -33,6 +33,27 @@ body {
     outline: none;
 }
 
+#close {
+    font-size: 30px;
+    color: gray;    
+    background-color: white;
+    height: 50px;
+    width: 225px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    right: 0;
+}
+
+#close:active {
+    color: white;    
+    background-color: black;
+}
+
+#close:focus {
+    outline: none;
+}
+
 .gameElement {
     display: none;
 }
@@ -41,11 +62,11 @@ body {
     height: 25px;
     width: 150px;
     background-color: white;	
-    border: solid black;
+    border: 2px solid black;
 }
 
 #healthBar {
-    margin-top: -16px;
+    margin-top: -20px;
     height: 25px;
     width: 100%;
     background-color: lime;	
@@ -60,12 +81,12 @@ body {
     width: 150px;
     margin-top: 5px;
     background-color: white;	
-    border: solid black;
+    border: 2px solid black;
     display: none;
 }
     
 #enemyHealthBar {
-    margin-top: -16px;
+    margin-top: -20px;
     height: 25px;
     width: 100%;
     background-color: darkred;	
@@ -79,31 +100,30 @@ body {
     margin-top: 10px;	
 }
 
+#inventory {
+
+}
+
 .inventoryClass {
     display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 100px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
 }
 
 .inv-content {
     background-color: #fefefe;
-    margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 25%;
-    height: 500px;
+    width: 500px;
+    height: 750px;
+    right: 2%;
+    top: 0;
+    position: fixed;
+    margin-top: 10px;
 }
 
 #coins {
-margin-top: -15px;
+    margin-top: -15px;
 }
 
 #statBoard {
@@ -117,4 +137,8 @@ margin-top: -15px;
     border: 1px solid black;
     height: 100px;
     flex: 1;
+}
+
+#displays {
+    font-size: 20px;
 }
