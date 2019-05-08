@@ -26,7 +26,8 @@ var tips = [
 	"Minibosses are spawned by quest items that you can find around the jungle. Minibosses provide helpful items that are crucial to continue your journey.",
 	"The curse effect makes enemies more likely to miss an attack on you.",
 	"Having multiple of one effect on one weapon is useless and will not increase any effects. Effects that come with the weapon will always be prioritized.",
-	"The attack damage stat does not include the damage of your weapon."
+	"The attack damage stat does not include the damage of your weapon.",
+	"Ancient Golems do a lot of damage, but they are very slow and have a high chance to miss an attack.",
 
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
@@ -76,7 +77,6 @@ var enchants = [
 	"sharpness II", 7, "bleed", 10,
 	"sharpness III", 9, "bleed", 15,
 ];
-var enchantBooks = ["sharpness I", "sharpness II", "sharpness III"];
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock", "shuriken"];
 
@@ -197,6 +197,9 @@ var shopItems = [
 	"metal boots", 15, 2, 3,
 	"piercer", 25, 2, 5,
 	"mace", 50, 2, 5,
+	"sharpness I", 30, 2, 3,
+	"sharpness II", 40, 3, 4,
+	"sharpness III", 50, 4, 10,
 ];
 
 var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMart",];
@@ -235,7 +238,6 @@ function start() {
 	document.getElementById("titleScreen").style.display = "none";
 	document.getElementById("baseControls").style.display = "block";
 	document.getElementById("statBoard").style.display = "flex";
-	document.getElementById("healthBarFrame").style.display = "block";
 }
 
 function inv(situation) {
@@ -246,12 +248,13 @@ function inv(situation) {
 		while (counter < inventory.length) {
 			var invItem = document.createElement("p");
 			var string = inventory[counter];
-			if (consumables.indexOf(string) >= 0 || questItems.indexOf(string) >= 0) {
+			if (consumables.indexOf(string) >= 0 || questItems.indexOf(string) >= 0 || enchants.indexOf(string) >= 0) {
 				invItem.setAttribute("id", string);
-				invItem.setAttribute("onclick", "drinkPotion(this.id);");
+				invItem.setAttribute("onclick", "use(this.id);");
 				invItem.setAttribute("style", "color: blue; cursor: pointer;");
 				if (consumables.indexOf(string) >= 0) { string = window[string][5] }
 				if (questItems.indexOf(string) >= 0) { string = window[string][0] }
+				if (enchants.indexOf(string) >= 0) { string = string + " book" };
 			}
 			var divString = string.split("");
 			divString[0] = divString[0].toUpperCase();
@@ -341,7 +344,7 @@ function shop(shopName) {
 			if (consumables.indexOf(string) >= 0) { string = window[string][5] }
 			if (questItems.indexOf(string) >= 0) { string = window[string][0] }
 			if (equipment.indexOf(string) >= 0) { string = window[string][0] }
-			if (enchantBooks.indexOf(string) >= 0) { string = string + " book" };
+			if (enchants.indexOf(string) >= 0) { string = string + " book" };
 			if (coins >= price) {
 				shopItem.setAttribute("id", item);
 				shopItem.setAttribute("onclick", "buyItem(this.id);");
@@ -614,9 +617,13 @@ function selection(input) {
 	}
 }
 
-function drinkPotion(potion) {
+function use(potion) {
 	if (consumables.indexOf(potion) == -1 && questItems.indexOf(potion) >= 0) {
 		summonMiniBoss(potion);
+		return;
+	}
+	if (consumables.indexOf(potion) == -1 && enchants.indexOf(potion) >= 0) {
+		enchantWeapon(potion);
 		return;
 	}
 	var words = ["chug", "drink", "gulp down", "consume", "guzzle", "sip"];
@@ -698,7 +705,7 @@ function update(message, message2, message3) {
 
 function useItem(item) {
 	if (consumables.indexOf(item) >= 0) {
-		drinkPotion(item);
+		use(item);
 	}
 	else {
 		var itemStats = window[item]
@@ -747,8 +754,13 @@ function summonMiniBoss(item) {
 
 }
 
-function enchantWeapon() {
-
+function enchantWeapon(enchant) {
+	update("You used the " + enchant + " book. <br> Your weapon has gained the " + enchant + " enchantment.", "clear", "clear");
+	weaponEnchants.push(enchant);
+	var slot = inventory.indexOf(enchant);
+	inventory.splice(slot, 1);
+	document.getElementById("inventory").style.display = "none";
+	document.getElementById("invContents").innerHTML = "";
 }
 
 function calcArmor(type) {
@@ -811,4 +823,4 @@ window.onclick = function (event) {
 	}
 }
 
-console.log("1.3");
+console.log("1.4");
