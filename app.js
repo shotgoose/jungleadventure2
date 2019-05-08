@@ -53,7 +53,8 @@ var weapons = [
 	"blood gauntlet", "magicDark", 25, "bleed", 30, "", 0,
 	"infinity gauntlet", "magicBright", 100, "assassinate", .05, "", 0,
 	"scythe", "sharp", 70, "lifesteal", .5, "curse", .2,
-	"holy bible", "magicBright", 70, "curse", .2, "", 0,
+	"spell book", "magicBright", 70, "curse", .2, "", 0,
+	"carrot sword", "sharp", 50, "lifesteal", .4, "", 0,
 ];
 //Key to Armor: [ARMOR NAME], [INCOMING DAMAGE DECREASE], [OUTGOING DAMAGE INCREASE], [ARMOR SLOT]
 //Damage and protection numbers can be negative, it will reverse the effect and lead to interesting armors that have pros and cons
@@ -128,16 +129,17 @@ var goblin = [50, 10, .40, 0, .8, "potion", "human", .2, "bow", 0, "", "ranged",
 var knight = [75, 10, .30, 5, .5, "metal helmet", "human", 0, "", 10, "", "sharp", 10, .8];
 var bomber = [50, 15, .40, 10, .7, "dynamite", "human", 0, "", 0, "", "explosive", 10, .7];
 var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "animal", 15, .5];
-var rabbit = [50, 500, 1, 0, 0, "", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
+var rabbit = [50, 500, 1, 0, .05, "carrot", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3];
 var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
 var assassin = [100, 0, 1, 90, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .6];
 var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "sharp", 15, .7];
-var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "holy bible", 0, "magicBright", 20, .9]
+var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "magicBright", 20, .9]
 
 //MINIBOSSES
-var golem = [125, 50, .7, 15, .8, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1];
+var golem = [100, 50, .7, 15, 1, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1];
 var werewolf = [150, 30, .2, 20, 1, "werewolfpotion", "fourLegged", 0, "", 0, "Werewolf", "animal", 50, 1];
+var giantrabbit = [200, 40, .4, 20, 1, "carrot sword", "fourLegged", 0, "", 0, "Giant Rabbit", "animal", 50, 1]
 
 //BOSSES
 var sgtGoblin = [200, 30, .3, 10, 1, "legendary goblin sword", "human", 0, "", 0, "Sargeant Goblin", "sharp", 100, 1]; //turn 100
@@ -199,13 +201,14 @@ var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMa
 
 //-----------------------------------
 
-var questItems = ["bait", "totem"];
+var questItems = ["bait", "totem", "carrot"];
 //Key to Quest Items
 //[0] Non-var name of item
 //[1] Miniboss this item summons
 
 var bait = ["werewolf bait", "werewolf", "You wait in a nearby bush and wait for a werewolf to appear. Minutes later, a werewolf comes from behind a tree and begins eating the bait."];
 var totem = ["awakening totem", "golem", "An Ancient Golem awakens from a centuries long rest and emerges from the ground in front of you."];
+var carrot = ["massive carrot", "giantrabbit", "A giant rabbit emerges from the trees. It's footsteps make the ground and trees shake."]
 
 //-----------------------------------
 function start() {
@@ -788,4 +791,4 @@ window.onclick = function (event) {
 	}
 }
 
-console.log("1.0")
+console.log("1.1")
