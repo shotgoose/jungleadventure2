@@ -132,14 +132,14 @@ var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "
 var rabbit = [50, 500, 1, 0, .05, "carrot", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3];
 var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
-var assassin = [100, 0, 1, 90, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .6];
-var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "sharp", 15, .7];
-var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "magicBright", 20, .9]
+var assassin = [100, 0, 1, 90, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .6];
+var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .7];
+var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, 1];
 
 //MINIBOSSES
 var golem = [100, 50, .7, 15, 1, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1];
 var werewolf = [150, 30, .2, 20, 1, "werewolfpotion", "fourLegged", 0, "", 0, "Werewolf", "animal", 50, 1];
-var giantrabbit = [200, 40, .4, 20, 1, "carrot sword", "fourLegged", 0, "", 0, "Giant Rabbit", "animal", 50, 1]
+var giantrabbit = [200, 40, .4, 20, 1, "carrot sword", "fourLegged", 0, "", 0, "Giant Rabbit", "animal", 50, 1];
 
 //BOSSES
 var sgtGoblin = [200, 30, .3, 10, 1, "legendary goblin sword", "human", 0, "", 0, "Sargeant Goblin", "sharp", 100, 1]; //turn 100
