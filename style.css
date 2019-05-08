@@ -29,6 +29,10 @@ body {
     color: white;	
 }
 
+.button:focus {
+    outline: none;
+}
+
 .gameElement {
     display: none;
 }
