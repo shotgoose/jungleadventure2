@@ -26,6 +26,7 @@ var tips = [
 	"Minibosses are spawned by quest items that you can find around the jungle. Minibosses provide helpful items that are crucial to continue your journey.",
 	"The curse effect makes enemies more likely to miss an attack on you.",
 	"Having multiple of one effect on one weapon is useless and will not increase any effects. Effects that come with the weapon will always be prioritized.",
+	"The attack damage stat does not include the damage of your weapon."
 
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
@@ -75,6 +76,7 @@ var enchants = [
 	"sharpness II", 7, "bleed", 10,
 	"sharpness III", 9, "bleed", 15,
 ];
+var enchantBooks = ["sharpness I", "sharpness II", "sharpness III"];
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock", "shuriken"];
 
@@ -219,7 +221,7 @@ function start() {
 	health = 100;
 	maxHealth = 100;
 	fighting = false;
-	regen = 5;
+	regen = 2;
 	defense = 0;
 	extraDMG = 0;
 	coins = 0;
@@ -227,10 +229,13 @@ function start() {
 	bleed = 0;
 	weaponEnchants = [];
 	weaponEffects = [];
+	update();
 
 	document.getElementById("displays").style.display = "block";
 	document.getElementById("titleScreen").style.display = "none";
 	document.getElementById("baseControls").style.display = "block";
+	document.getElementById("statBoard").style.display = "flex";
+	document.getElementById("healthBarFrame").style.display = "block";
 }
 
 function inv(situation) {
@@ -336,6 +341,7 @@ function shop(shopName) {
 			if (consumables.indexOf(string) >= 0) { string = window[string][5] }
 			if (questItems.indexOf(string) >= 0) { string = window[string][0] }
 			if (equipment.indexOf(string) >= 0) { string = window[string][0] }
+			if (enchantBooks.indexOf(string) >= 0) { string = string + " book" };
 			if (coins >= price) {
 				shopItem.setAttribute("id", item);
 				shopItem.setAttribute("onclick", "buyItem(this.id);");
@@ -384,7 +390,9 @@ function buyItem(item) {
 function cont() {
 	turns = turns + 1;
 	var eventRNG = Math.random();
-	if (fighting == false && health < maxHealth) { health = health + regen };
+	if (fighting == false && health < maxHealth) {
+		health = health + regen
+	};
 	if (health > maxHealth) { health = maxHealth };
 
 	//Enemy Encounter
@@ -433,14 +441,13 @@ function attack() {
 	while (i < weaponEnchants.length) {
 		weaponEffects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 2]);
 		weaponEffects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 3]);
-		console.log(weaponEffects);
 		i = i + 4;
 	};
 	if (window[fighter][9] != null) { weaponDamage = weaponDamage - window[fighter][9]; }
 	var armorInc = calcArmor("deal");
 	var enchantInc = 0;
 	if (weaponEnchants != []) { enchantInc = calcEnchants(); }
-	weaponDamage = weaponDamage + armorInc + enchantInc;
+	weaponDamage = weaponDamage + armorInc + enchantInc + extraDMG;
 	if (weaponDamage < 0) { weaponDamage = 0 };
 	enemyHealth = enemyHealth - weaponDamage;
 	var verbArray = weaponType + "Words";
@@ -463,7 +470,7 @@ function attack() {
 		if (Math.random() <= chance) {
 			enemyHealth = 0
 			update("", "", "The " + fighterName + " was beheaded by a weapon effect.");
-			fighting = "false";
+			fighting = false;
 
 			document.getElementById("fightingControls").style.display = "none";
 			document.getElementById("afterFightControls").style.display = "block";
@@ -514,7 +521,7 @@ function enemyAttack() {
 	if (enemyHealth <= 0) {
 		enemyHealth = 0;
 		update("", "", "The " + fighterName + " dies.");
-		fighting = "false";
+		fighting = false;
 
 		document.getElementById("fightingControls").style.display = "none";
 		document.getElementById("afterFightControls").style.display = "block";
@@ -674,6 +681,19 @@ function update(message, message2, message3) {
 	if (message3 == "clear") {
 		document.getElementById("thirdDisplay").innerHTML = "";
 	}
+
+	var armorInc = calcArmor("deal");
+	var armorBlock = calcArmor("block");
+	var attackDamage = armorInc + extraDMG;
+	var damageResist = armorBlock + defense;
+	var all = [damageResist, attackDamage, regen, maxHealth];
+
+	var stats = Array.from(document.getElementsByClassName("statCh"));
+	i = 0;
+	while (i < stats.length) {
+		stats[i].innerHTML = all[i];
+		i = i + 1;
+	}
 }
 
 function useItem(item) {
@@ -791,4 +811,4 @@ window.onclick = function (event) {
 	}
 }
 
-console.log("1.2")
+console.log("1.3");

@@ -31,6 +31,7 @@
 				<p id="enemyHealthDisplay"> </p>
 			</div>
 		</div>
+
 		<p id="turns">0 turns</p>
 		<p id="coins">0 coins</p>
 	</div>
@@ -52,6 +53,33 @@
 	<div class="gameElement" id="selectionYesNo">
 		<button class="button" id="pickUp" onclick="selection('yes');">Yes</button>
 		<button class="button" id="dontPickUp" onclick="selection('no')">No</button>
+	</div>
+
+	<div class="gameElement" id="statBoard">
+		<div class="stat" id="dmgResistStat" style="background: #838483;">
+			<center>
+				<p><b>Damage Resist</b></p>
+				<p class="statCh"></p>
+			</center>
+		</div>
+		<div class="stat" id="attackdmgStat" style="background: #b72137;">
+			<center>
+				<p><b>Attack Damage</b></p>
+				<p class="statCh"></p>
+			</center>
+		</div>
+		<div class="stat" id="regenStat" style="background: #45c1a0;">
+			<center>
+				<p><b>Regen</b></p>
+				<p class="statCh"></p>
+			</center>
+		</div>
+		<div class="stat" id="maxHealthStat" style="background: #3dcc63;">
+			<center>
+				<p><b>Max Health</b></p>
+				<p class="statCh"></p>
+			</center>
+		</div>
 	</div>
 
 	<div id="inventory" class="inventoryClass">
