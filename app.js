@@ -787,3 +787,5 @@ window.onclick = function (event) {
 		}
 	}
 }
+
+console.log("1.0")
