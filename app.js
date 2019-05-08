@@ -1,5 +1,3 @@
-//make quest item system
-//make enchant system 
 var inventory;
 var armor;
 var turns;
@@ -19,13 +17,16 @@ var shopName;
 var inShop;
 var bleed;
 var weaponEnchants;
+var weaponEffects;
 var tips = [
 	"The lifesteal effect lets you heal a portion of the damage you did to an enemy.",
 	"The assasinate effect has a chance to instakill an enemy with every hit.",
 	"Using ranged weapons makes your opponents 20% more likely to miss an attack on you.",
 	"The bleed effect can stack, the more it is used in a fight, the more damage the bleed does per turn. In long fights this can lead to extremely high damage.",
 	"Minibosses are spawned by quest items that you can find around the jungle. Minibosses provide helpful items that are crucial to continue your journey.",
-	"The curse effect makes enemies more likely to miss an attack on you."
+	"The curse effect makes enemies more likely to miss an attack on you.",
+	"Having multiple of one effect on one weapon is useless and will not increase any effects. Effects that come with the weapon will always be prioritized.",
+
 ]
 var tip = tips[Math.floor(Math.random() * tips.length)];
 document.getElementById("tip").innerHTML = "Tip: " + tip;
@@ -37,7 +38,7 @@ document.getElementById("tip").innerHTML = "Tip: " + tip;
 //Bleed = extra damage per turn (bleed will stack every turn leading to high damage, bleed weapons are most powerful in long fights)
 //Curse = enemy has extra chance to miss
 var weapons = [
-	"sword", "sharp", 20, "", 0, "", 0,
+	"rusty sword", "sharp", 20, "", 0, "", 0,
 	"club", "dull", 15, "", 0, "", 0,
 	"bow", "ranged", 20, "", 0, "", 0,
 	"golem fist", "dull", 50, "curse", .05, "", 0,
@@ -46,13 +47,13 @@ var weapons = [
 	"mace", "dull", "30", "", 0, "", 0,
 	"assissin's dagger", "sharp", 2, "assassinate", 0.15, "", 0,
 	"piercer", "sharp", 0, "bleed", 10, "", 0,
-	"torturer's longsword", "sharp", 5, "bleed", 25, "", 0,
+	"torturer's longsword", "sharp", 5, "bleed", 25, "assassinate", .03,
 	"life staff", "magicHeal", 50, "lifesteal", 0.15, "", 0,
-	"fire staff", "magicFire", 100, "", 0, "", 0,
+	"fire staff", "magicFire", 75, "", 0, "", 0,
 	"blood gauntlet", "magicDark", 25, "bleed", 30, "", 0,
 	"infinity gauntlet", "magicBright", 100, "assassinate", .05, "", 0,
 	"scythe", "sharp", 70, "lifesteal", .5, "curse", .2,
-
+	"holy bible", "magicBright", 70, "curse", .2, "", 0,
 ];
 //Key to Armor: [ARMOR NAME], [INCOMING DAMAGE DECREASE], [OUTGOING DAMAGE INCREASE], [ARMOR SLOT]
 //Damage and protection numbers can be negative, it will reverse the effect and lead to interesting armors that have pros and cons
@@ -67,11 +68,11 @@ var armors = [
 	"steel plate", 20, -5, 1,
 	"precision glasses", 0, 10, 0,
 ];
-//Key to Enchants: [ENCHANT NAME], [DAMAGE INCREASE], [EXTRA EFFECT]
+//Key to Enchants: [ENCHANT NAME], [DAMAGE INCREASE], [EFFECT], [EFFECT STAT]
 var enchants = [
-	"sharpness I", 5,
-	"sharpness II", 10,
-	"sharpness III", 15,
+	"sharpness I", 5, "bleed", 5,
+	"sharpness II", 7, "bleed", 10,
+	"sharpness III", 9, "bleed", 15,
 ];
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock", "shuriken"];
@@ -103,7 +104,7 @@ var fightMessages = [
 
 //-----------------------------------
 
-var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage", "assassin", "hunter"];
+var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage", "assassin", "hunter", "priest"];
 
 //Key to enemy stats -
 //[0] Enemy health
@@ -130,8 +131,9 @@ var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "
 var rabbit = [50, 500, 1, 0, 0, "", "fourLegged", 0, "", 0, "", "magicDark", 5, 1];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3];
 var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2];
-var assassin = [100, 0, 1, 90, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .4];
-var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "werewolf bait", 0, "sharp", 15, .7];
+var assassin = [100, 0, 1, 90, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "sharp", 20, .6];
+var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "sharp", 15, .7];
+var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "holy bible", 0, "magicBright", 20, .9]
 
 //MINIBOSSES
 var golem = [125, 50, .7, 15, .8, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1];
@@ -181,26 +183,33 @@ var shuriken = ["shuriken", 30, 0, "bleed"];
 //[4] Shop Level Maximum
 
 var shopItems = [
+	"rock", 5, 1, 3,
+	"shuriken", 10, 1, 2,
 	"potion", 15, 1, 20,
-	"mace", 50, 2, 15,
-	"rock", 5, 1, 100,
-	"shuriken", 10, 1, 100,
+	"leafjuice", 15, 1, 5,
+	"metal helmet", 20, 2, 5,
+	"chainmail vest", 25, 2, 5,
+	"metal leggings", 25, 2, 5,
+	"metal boots", 15, 2, 3,
+	"piercer", 25, 2, 5,
+	"mace", 50, 2, 5,
 ];
 
 var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMart",];
 
 //-----------------------------------
+
 var questItems = ["bait", "totem"];
 //Key to Quest Items
 //[0] Non-var name of item
 //[1] Miniboss this item summons
 
-var bait = ["werewolf bait", "werewolf"];
-var totem = ["awakening totem", "golem"];
+var bait = ["werewolf bait", "werewolf", "You wait in a nearby bush and wait for a werewolf to appear. Minutes later, a werewolf comes from behind a tree and begins eating the bait."];
+var totem = ["awakening totem", "golem", "An Ancient Golem awakens from a centuries long rest and emerges from the ground in front of you."];
 
 //-----------------------------------
 function start() {
-	inventory = ["sword", "potion",]
+	inventory = ["rusty sword", "potion",]
 	armor = ["", "", "", ""]; //armor = "head", "chest", "legs", "feet"
 	turns = 0;
 	fighter = "none";
@@ -214,6 +223,7 @@ function start() {
 	inShop = false;
 	bleed = 0;
 	weaponEnchants = [];
+	weaponEffects = [];
 
 	document.getElementById("displays").style.display = "block";
 	document.getElementById("titleScreen").style.display = "none";
@@ -228,11 +238,12 @@ function inv(situation) {
 		while (counter < inventory.length) {
 			var invItem = document.createElement("p");
 			var string = inventory[counter];
-			if (consumables.indexOf(string) >= 0) {
+			if (consumables.indexOf(string) >= 0 || questItems.indexOf(string) >= 0) {
 				invItem.setAttribute("id", string);
 				invItem.setAttribute("onclick", "drinkPotion(this.id);");
 				invItem.setAttribute("style", "color: blue; cursor: pointer;");
-				string = window[string][5];
+				if (consumables.indexOf(string) >= 0) { string = window[string][5] }
+				if (questItems.indexOf(string) >= 0) { string = window[string][0] }
 			}
 			var divString = string.split("");
 			divString[0] = divString[0].toUpperCase();
@@ -267,7 +278,6 @@ function inv(situation) {
 				invItem.setAttribute("style", "color: blue; cursor: pointer;");
 				if (consumables.indexOf(string) >= 0) { string = window[string][5] }
 				if (equipment.indexOf(string) >= 0) { string = window[string][0] }
-				console.log(string);
 				var divString = string.split("");
 				divString[0] = divString[0].toUpperCase();
 				string = divString.join('');
@@ -320,8 +330,11 @@ function shop(shopName) {
 		if (minLevel <= shopLevel && maxLevel >= shopLevel) {
 			var shopItem = document.createElement("p");
 			var string = item;
+			if (consumables.indexOf(string) >= 0) { string = window[string][5] }
+			if (questItems.indexOf(string) >= 0) { string = window[string][0] }
+			if (equipment.indexOf(string) >= 0) { string = window[string][0] }
 			if (coins >= price) {
-				shopItem.setAttribute("id", string);
+				shopItem.setAttribute("id", item);
 				shopItem.setAttribute("onclick", "buyItem(this.id);");
 				shopItem.setAttribute("style", "color: blue; cursor: pointer;");
 			}
@@ -345,6 +358,7 @@ function buyItem(item) {
 	coins = coins - price;
 	if (weapons.indexOf(item) >= 0) {
 		update("You bought a " + item + " and left behind your" + inventory[0] + ".");
+		weaponEnchants = [];
 		inventory[0] = item;
 	}
 	if (consumables.indexOf(item) >= 0 || equipment.indexOf(item) >= 0) {
@@ -398,7 +412,6 @@ function cont() {
 		currentPrompt = "enterShop";
 		update("You found a shop named " + shopName + ", do you want to enter?", "clear", "clear");
 	}
-
 	update();
 	if (health <= 0) { die(); }
 }
@@ -408,11 +421,18 @@ function attack() {
 	var weaponID = weapons.indexOf(weapon);
 	var weaponType = weapons[weaponID + 1];
 	var weaponDamage = weapons[weaponID + 2];
-	var weaponEffect = weapons[weaponID + 3];
-	var weaponEffect2 = weapons[weaponID + 5];
-	var WES = weapons[weaponID + 4];
-	var WES2 = weapons[weaponID + 6];
-
+	weaponEffects = [];
+	weaponEffects.push(weapons[weaponID + 3]);
+	weaponEffects.push(weapons[weaponID + 4]);
+	weaponEffects.push(weapons[weaponID + 5]);
+	weaponEffects.push(weapons[weaponID + 6]);
+	var i = 0;
+	while (i < weaponEnchants.length) {
+		weaponEffects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 2]);
+		weaponEffects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 3]);
+		console.log(weaponEffects);
+		i = i + 4;
+	};
 	if (window[fighter][9] != null) { weaponDamage = weaponDamage - window[fighter][9]; }
 	var armorInc = calcArmor("deal");
 	var enchantInc = 0;
@@ -420,7 +440,6 @@ function attack() {
 	weaponDamage = weaponDamage + armorInc + enchantInc;
 	if (weaponDamage < 0) { weaponDamage = 0 };
 	enemyHealth = enemyHealth - weaponDamage;
-
 	var verbArray = weaponType + "Words";
 	var word = window[verbArray][Math.floor(Math.random() * window[verbArray].length)];
 	var partArray = window[fighter][6] + "Parts";
@@ -428,19 +447,16 @@ function attack() {
 
 	update("", "You " + word + " the " + fighterName + "'s " + bodyPart + " with your " + weapon + ", dealing " + weaponDamage + " damage.");
 
-	if (weaponEffect == "lifesteal" || weaponEffect2 == "lifesteal") {
-		if (weaponEffect == "lifesteal") { var lifeSteal = weaponDamage * WES };
-		if (weaponEffect2 == "lifesteal") { var lifeSteal = weaponDamage * WES2 };
+	//Effects
+	if (weaponEffects.indexOf("lifesteal") >= 0) {
+		var lifeSteal = weaponEffects[weaponEffects.indexOf("lifesteal") + 1] * weaponDamage;
 		lifeSteal = Math.round(lifeSteal);
-		console.log(lifeSteal + " + " + health);
 		health = health + lifeSteal;
 		update();
-		console.log(health)
 		if (health > maxHealth) { health = maxHealth };
 	}
-	if (weaponEffect == "assassinate") {
-		if (weaponEffect == "assassinate") { var chance = WES };
-		if (weaponEffect2 == "assassinate") { var chance = WES2 };
+	if (weaponEffects.indexOf("assassinate") >= 0) {
+		var chance = weaponEffects[weaponEffects.indexOf("assassinate") + 1];
 		if (Math.random() <= chance) {
 			enemyHealth = 0
 			update("", "", "The " + fighterName + " was beheaded by a weapon effect.");
@@ -451,24 +467,28 @@ function attack() {
 			return;
 		}
 	}
-	if (weaponEffect == "bleed") { bleed = bleed + WES };
-	if (weaponEffect2 == "bleed") { bleed = bleed + WES2 };
+	if (weaponEffects.indexOf("bleed") >= 0) {
+		bleed = bleed + weaponEffects[weaponEffects.indexOf("bleed") + 1];
+	};
 	enemyHealth = enemyHealth - bleed;
+
+
+	//Effect Messages
 	if (bleed > 0) {
 		document.getElementById("secondaryDisplay").innerHTML = document.getElementById("secondaryDisplay").innerHTML + " <br> The " + fighterName + " takes " + bleed + " more damage to a bleed effect.";
 	}
-
-
-
+	if (lifeSteal > 0) {
+		document.getElementById("secondaryDisplay").innerHTML = document.getElementById("secondaryDisplay").innerHTML + " <br> You healed " + lifeSteal + " health from a lifesteal effect.";
+	}
 	enemyAttack();
-
 	turns = turns + 1;
 }
 
 function enemyAttack() {
 	var missingChance = window[fighter][2];
-	if (weapons[weapons.indexOf(inventory[0] + 3)] == "curse") { missingChance = missingChance + weapons[weapons.indexOf(inventory[0] + 4)] }
-	if (weapons[weapons.indexOf(inventory[0] + 5)] == "curse") { missingChance = missingChance + weapons[weapons.indexOf(inventory[0] + 6)] }
+	if (weaponEffects[weaponEffects.indexOf("assassinate")] >= 0) {
+		missingChance = missingChance + weaponEffects[weaponEffects.indexOf("curse") + 1];
+	}
 	if (weapons[weapons.indexOf(inventory[0]) + 1] == "ranged") { missingChance = missingChance + .2 }
 	if (Math.random() > missingChance) {
 		var damage = window[fighter][1];
@@ -522,7 +542,11 @@ function loot() {
 
 	if (drop != "") {
 		coins = coins + coinDrop;
-		update("You loot the dead body.", "You found a " + drop + "! Do you want to pick it up?", "The " + fighterName + " had " + coinDrop + " coins.");
+		var string = drop;
+		if (consumables.indexOf(string) >= 0) { string = window[string][5] }
+		if (questItems.indexOf(string) >= 0) { string = window[string][0] }
+		if (equipment.indexOf(string) >= 0) { string = window[string][0] }
+		update("You loot the dead body.", "You found a " + string + "! Do you want to pick it up?", "The " + fighterName + " had " + coinDrop + " coins.");
 		document.getElementById("afterFightControls").style.display = "none";
 		document.getElementById("selectionYesNo").style.display = "block";
 		currentPrompt = "pickup";
@@ -537,11 +561,13 @@ function selection(input) {
 		if (input == "yes") {
 			if (weapons.indexOf(drop) >= 0) {
 				update("You pick up the " + drop + " and leave behind your " + inventory[0] + ".", "clear", "clear");
+				weaponEnchants = [];
 				inventory[0] = drop;
 			}
-			if (consumables.indexOf(drop) >= 0 || equipment.indexOf(drop) >= 0) {
+			if (consumables.indexOf(drop) >= 0 || equipment.indexOf(drop) >= 0 || questItems.indexOf(drop) >= 0) {
 				if (consumables.indexOf(drop) >= 0) { var consumableName = window[drop][5] };
-				if (equipment.indexOf(drop) >= 0) { var consumableName = window[drop][0] };
+				if (equipment.indexOf(drop) >= 0) { var consumableName = window[drop][0]; };
+				if (questItems.indexOf(drop) >= 0) { var consumableName = window[drop][0]; };
 				update("You pick up the " + consumableName + ".", "clear", "clear");
 				inventory.push(drop);
 			}
@@ -579,6 +605,10 @@ function selection(input) {
 }
 
 function drinkPotion(potion) {
+	if (consumables.indexOf(potion) == -1 && questItems.indexOf(potion) >= 0) {
+		summonMiniBoss(potion);
+		return;
+	}
 	var words = ["chug", "drink", "gulp down", "consume", "guzzle", "sip"];
 	var word = words[Math.floor(Math.random() * words.length)];
 
@@ -668,7 +698,29 @@ function useItem(item) {
 	enemyAttack();
 }
 
-function summonMiniBoss() {
+function summonMiniBoss(item) {
+	var questItem = window[item];
+	var name = questItem[0];
+	var boss = questItem[1];
+	var message = questItem[2];
+
+	fighting = true;
+	fighter = boss;
+	if (window[fighter][10] != null && window[fighter][10] != "") { fighterName = window[fighter][10] }
+	else (fighterName = fighter);
+	var startingDamage = window[fighter][3];
+	health = health - startingDamage;
+	enemyHealth = window[fighter][0];
+	document.getElementById("baseControls").style.display = "none";
+	document.getElementById("fightingControls").style.display = "block";
+	bleed = 0;
+
+	update("You use the " + name + ". <br>" + message + "<br> You are now fighting a " + boss + ".", "clear", "clear");
+
+	var slot = inventory.indexOf(item);
+	inventory.splice(slot, 1);
+	document.getElementById("inventory").style.display = "none";
+	document.getElementById("invContents").innerHTML = "";
 
 }
 
@@ -696,7 +748,6 @@ function calcArmor(type) {
 		while (i < armor.length) {
 			if (armor[i] != "") {
 				var current = armors[armors.indexOf(armor[i]) + 2];
-				console.log(current)
 				var total = total + current;
 			}
 			i = i + 1;
@@ -736,6 +787,3 @@ window.onclick = function (event) {
 		}
 	}
 }
-
-
-
