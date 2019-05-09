@@ -659,8 +659,7 @@ function use(potion) {
 
 	var potionSlot = inventory.indexOf(potion);
 	inventory.splice(potionSlot, 1);
-	document.getElementById("inventory").style.display = "none";
-	document.getElementById("invContents").innerHTML = "";
+	closeInv();
 
 	if (health > maxHealth) { health = maxHealth };
 
@@ -759,8 +758,7 @@ function useItem(item) {
 		}
 		var equipSlot = inventory.indexOf(item);
 		inventory.splice(equipSlot, 1);
-		document.getElementById("inventory").style.display = "none";
-		document.getElementById("invContents").innerHTML = "";
+		closeInv();
 
 	}
 	enemyAttack();
@@ -776,6 +774,11 @@ function closeInv() {
 	}
 	document.getElementById("inventory").style.display = "none";
 	document.getElementById("invContents").innerHTML = "";
+
+	if (inShop == true) {
+		update("You exit " + shopName + ".");
+		inShop = false;
+	}
 }
 
 function summonMiniBoss(item) {
@@ -803,8 +806,7 @@ function summonMiniBoss(item) {
 
 	var slot = inventory.indexOf(item);
 	inventory.splice(slot, 1);
-	document.getElementById("inventory").style.display = "none";
-	document.getElementById("invContents").innerHTML = "";
+	closeInv();
 
 }
 
@@ -812,8 +814,7 @@ function enchantWeapon(enchant) {
 	weaponEnchants.push(enchant);
 	var slot = inventory.indexOf(enchant);
 	inventory.splice(slot, 1);
-	document.getElementById("inventory").style.display = "none";
-	document.getElementById("invContents").innerHTML = "";
+	closeInv();
 	update("You used the " + enchant + " book. <br> Your " + inventory[0] + " has gained the " + enchant + " enchantment.", "clear", "clear");
 }
 
