@@ -57,6 +57,7 @@ var weapons = [
 	"scythe", "sharp", 70, "lifesteal", .5, "curse", .2,
 	"spell book", "magicBright", 70, "curse", .2, "", 0,
 	"carrot sword", "sharp", 50, "lifesteal", .4, "", 0,
+	"banana gun", "ranged", 45, "curse", .15, 0, "", 0,
 ];
 //Key to Armor: [ARMOR NAME], [INCOMING DAMAGE DECREASE], [OUTGOING DAMAGE INCREASE], [ARMOR SLOT]
 //Damage and protection numbers can be negative, it will reverse the effect and lead to interesting armors that have pros and cons
@@ -76,6 +77,9 @@ var enchants = [
 	"sharpness I", 5, "bleed", 5,
 	"sharpness II", 7, "bleed", 10,
 	"sharpness III", 9, "bleed", 15,
+	"draining I", -5, "lifesteal", .2,
+	"draining II", -2, "lifesteal", .4,
+	"draining III", 1, "lifesteal", .6,
 ];
 var consumables = ["potion", "leafjuice", "crocblood", "holywater", "werewolfpotion",];
 var equipment = ["dynamite", "rock", "shuriken"];
@@ -135,14 +139,16 @@ var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "
 var rabbit = [50, 500, 1, 0, .05, "carrot", "fourLegged", 0, "", 0, "", "magicDark", 5, 1, false];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3, false];
 var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2, false];
-var assassin = [100, 0, 1, 45, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .6, true];
-var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .7, false];
-var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, 1, false];
+var assassin = [100, 0, 1, 45, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .2, true];
+var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .6, false];
+var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, .6, false];
+var monkey = [70, 20, .1, 20, .5, "banana", "human", .1, "banana gun", 0, "", "animal", 25, .4, false];
 
 //MINIBOSSES
 var golem = [100, 50, .7, 15, 1, "golem fist", "human", 0, "", 0, "Ancient Golem", "dull", 50, 1, true];
 var werewolf = [150, 30, .2, 20, 1, "werewolfpotion", "fourLegged", 0, "", 0, "Werewolf", "animal", 50, 1, false];
 var giantrabbit = [200, 40, .4, 20, 1, "carrot sword", "fourLegged", 0, "", 0, "Giant Rabbit", "animal", 50, 1, false];
+var kinggorilla = [300, 40, .2, 25, 1, "banana potion", "human", 0, "", 0, "King Gorilla", "animal", 70, 1, false]
 
 //BOSSES
 var sgtGoblin = [200, 30, .3, 10, 1, "legendary goblin sword", "human", 0, "", 0, "Sargeant Goblin", "sharp", 100, 1, false]; //turn 100
@@ -207,14 +213,15 @@ var shopNames = ["Adventure Depot", "Jungle Tavern", "Fighting Goods", "JungleMa
 
 //-----------------------------------
 
-var questItems = ["bait", "totem", "carrot"];
+var questItems = ["bait", "totem", "carrot", "banana"];
 //Key to Quest Items
 //[0] Non-var name of item
 //[1] Miniboss this item summons
 
-var bait = ["werewolf bait", "werewolf", "You wait in a nearby bush and wait for a werewolf to appear. Minutes later, a werewolf comes from behind a tree and begins eating the bait."];
+var bait = ["werewolf bait", "werewolf", "You wait in a nearby bush and wait for a werewolf to appear. A werewolf comes from behind a tree and begins eating the bait."];
 var totem = ["awakening totem", "golem", "An Ancient Golem awakens from a centuries long rest and emerges from the ground in front of you."];
-var carrot = ["massive carrot", "giantrabbit", "A giant rabbit emerges from the trees. It's footsteps make the ground and trees shake."]
+var carrot = ["massive carrot", "giantrabbit", "A giant rabbit emerges from the trees. It's footsteps make the ground and trees shake."];
+var banana = ["banana", "kinggorilla", "The King Gorilla smells the banana from miles away and stampedes over to you."]
 
 //-----------------------------------
 function start() {
@@ -866,4 +873,4 @@ function die() {
 	document.getElementById("selectionYesNo").style.display = "none";
 }
 
-console.log("1.5");
+console.log("1.6");
