@@ -507,7 +507,8 @@ function attack() {
 	}
 	if (weaponEffects.indexOf("bleed") >= 0) {
 		bleed = bleed + weaponEffects[weaponEffects.indexOf("bleed") + 1];
-		console.log(bleed)
+		console.log(bleed);
+		console.log(weaponEffects);
 	};
 	enemyHealth = enemyHealth - bleed;
 
@@ -721,23 +722,23 @@ function update(message, message2, message3) {
 
 	var attackDamage = armorInc + extraDMG;
 	var damageResist = armorBlock + defense;
+	var effects = [];
 	if (weaponEnchants != []) { enchantInc = calcEnchants(); }
-	weaponEffects = [];
-	if (weapons[weapons.indexOf(inventory[0]) + 3] != "") { weaponEffects.push(weapons[weapons.indexOf(inventory[0]) + 3]) }
-	if (weapons[weapons.indexOf(inventory[0]) + 5] != "") { weaponEffects.push(weapons[weapons.indexOf(inventory[0]) + 5]) }
+	if (weapons[weapons.indexOf(inventory[0]) + 3] != "") { effects.push(weapons[weapons.indexOf(inventory[0]) + 3]) }
+	if (weapons[weapons.indexOf(inventory[0]) + 5] != "") { effects.push(weapons[weapons.indexOf(inventory[0]) + 5]) }
 	var i = 0;
 	while (i < weaponEnchants.length) {
-		weaponEffects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 2]);
+		effects.push(enchants[enchants.indexOf(weaponEnchants[i]) + 2]);
 		i = i + 4;
 	};
 	weaponStats = weaponStats + enchantInc;
 
-	weaponEffects = weaponEffects.filter(function (item, index) {
-		return weaponEffects.indexOf(item) >= index;
+	effects = effects.filter(function (item, index) {
+		return effects.indexOf(item) >= index;
 	});
-	if (weaponEffects != "") { weaponEffects = "- Effects: " + weaponEffects.toString(); };
+	if (effects != "") { effects = "- Effects: " + effects.toString(); };
 
-	weaponStats = weaponStats + " DMG " + weaponEffects;
+	weaponStats = weaponStats + " DMG " + effects;
 
 	var all = [damageResist, attackDamage, weaponStats, regen, maxHealth];
 	var stats = Array.from(document.getElementsByClassName("statCh"));
