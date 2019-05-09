@@ -339,7 +339,7 @@ function shop(shopName) {
 		gameElements[i].disabled = "true";
 		i = i + 1;
 	}
-	Milestones = 0;
+	var shopMilestones = 0;
 	var counter = 0;
 	var count = true;
 	while (count == true) {
