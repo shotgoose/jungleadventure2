@@ -55,7 +55,7 @@ var weapons = [
 	"blood gauntlet", "magicDark", 25, "bleed", 30, "", 0,
 	"infinity gauntlet", "magicBright", 100, "assassinate", .05, "", 0,
 	"scythe", "sharp", 70, "lifesteal", .5, "curse", .2,
-	"spell book", "magicBright", 70, "curse", .2, "", 0,
+	"spell book", "magicBright", 45, "curse", .2, "", 0,
 	"carrot sword", "sharp", 50, "lifesteal", .4, "", 0,
 	"banana gun", "ranged", 45, "curse", .15, 0, "", 0,
 ];
@@ -92,7 +92,7 @@ var explosiveWords = ["explode", "obliterate", "scorch", "melt", "burn", "destro
 var magicHealWords = ["drain", "shoot", "empty", "absorb"];
 var magicFireWords = ["explode", "burn", "scorch", "melt", "fireball", "shoot"];
 var magicDarkWords = ["torture", "crush", "bludgeon", "mutilate",];
-var magicBrightWords = ["scorch", "blind", "disintegrate", "burn",];
+var magicBrightWords = ["scorch", "disintegrate", "burn", "wither"];
 
 var magicFire2Words = ["explode", "burn", "scorche", "melt", "fireball", "shoot"];
 
@@ -111,7 +111,7 @@ var fightMessages = [
 
 //-----------------------------------
 
-var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage", "assassin", "hunter", "priest"];
+var enemyList = ["goblin", "knight", "bomber", "crocodile", "rabbit", "ninja", "mage", "assassin", "hunter", "priest", "monkey"];
 
 //Key to enemy stats -
 //[0] Enemy health
@@ -141,7 +141,7 @@ var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 
 var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2, false];
 var assassin = [100, 0, 1, 45, .4, "assassin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .2, true];
 var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .6, false];
-var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, .6, false];
+var priest = [135, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, .6, false];
 var monkey = [70, 20, .1, 20, .5, "banana", "human", .1, "banana gun", 0, "", "animal", 25, .4, false];
 
 //MINIBOSSES
@@ -421,7 +421,7 @@ function cont() {
 	if (health > maxHealth) { health = maxHealth };
 
 	//Enemy Encounter
-	if (eventRNG <= .25) {
+	if (eventRNG <= .10) {
 		fighter = enemyList[Math.floor(Math.random() * enemyList.length)];
 		if (window[fighter][13] > Math.random()) {
 			fighting = true;
@@ -444,7 +444,7 @@ function cont() {
 	}
 
 	//Shop Encounter
-	if (eventRNG <= .30 && eventRNG > .25) {
+	if (eventRNG <= .14 && eventRNG > .10) {
 		shopName = shopNames[Math.floor(Math.random() * shopNames.length)];
 		document.getElementById("selectionYesNo").style.display = "block";
 		document.getElementById("baseControls").style.display = "none";
@@ -874,4 +874,4 @@ function die() {
 	document.getElementById("selectionYesNo").style.display = "none";
 }
 
-console.log("1.6");
+console.log("1.7");
