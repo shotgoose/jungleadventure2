@@ -47,7 +47,7 @@ var weapons = [
 	"sword of draining", "sharp", 30, "lifesteal", 0.6, "bleed", 35,
 	"axe of hell", "sharp", 30, "assassinate", 0.05, "curse", .1,
 	"mace", "dull", "30", "", 0, "", 0,
-	"assissin's dagger", "sharp", 2, "assassinate", 0.15, "", 0,
+	"assassin's dagger", "sharp", 2, "assassinate", 0.2, "", 0,
 	"piercer", "sharp", 0, "bleed", 10, "", 0,
 	"torturer's longsword", "sharp", 5, "bleed", 25, "assassinate", .03,
 	"life staff", "magicHeal", 50, "lifesteal", 0.15, "", 0,
@@ -139,7 +139,7 @@ var crocodile = [100, 20, .4, 20, .7, "crocblood", "fourLegged", 0, "", 5, "", "
 var rabbit = [50, 500, 1, 0, .05, "carrot", "fourLegged", 0, "", 0, "", "magicDark", 5, 1, false];
 var ninja = [100, 25, .2, 10, .6, "shuriken", "human", .6, "lightweight shoes", 0, "", "sharp", 20, .3, false];
 var mage = [100, 30, .3, 10, .3, "fire staff", "human", .1, "life staff", 0, "", "magicFire2", 25, .2, false];
-var assassin = [100, 0, 1, 45, .4, "assasin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .2, true];
+var assassin = [100, 0, 1, 45, .4, "assassin's dagger", "human", .1, "torturer's longsword", 0, "", "sharp", 20, .2, true];
 var hunter = [75, 15, .3, 10, .43, "spear", "human", .86, "bait", 0, "", "sharp", 15, .6, false];
 var priest = [120, 20, .4, 10, 1, "totem", "human", .3, "spell book", 0, "", "magicBright", 20, .6, false];
 var monkey = [70, 20, .1, 20, .5, "banana", "human", .1, "banana gun", 0, "", "animal", 25, .4, false];
@@ -507,6 +507,7 @@ function attack() {
 	}
 	if (weaponEffects.indexOf("bleed") >= 0) {
 		bleed = bleed + weaponEffects[weaponEffects.indexOf("bleed") + 1];
+		console.log(bleed)
 	};
 	enemyHealth = enemyHealth - bleed;
 
